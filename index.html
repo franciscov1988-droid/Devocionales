@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diario de Devocionales</title>
+<style>
+  :root {
+    --leather: #3b2413;
+    --leather-light: #5c3a21;
+    --paper: #fcf7f2;
+    --line: #e4d5c7;
+    --text: #2c1a0e;
+    --accent: #9c3f19;
+    --gold: #b5872a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background-color: #1a110a; 
+    font-family: 'Georgia', serif;
+    color: var(--text);
+    padding: 20px 10px;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  .notebook {
+    display: flex;
+    max-width: 950px;
+    width: 100%;
+    background: var(--paper);
+    border-radius: 4px 12px 12px 4px;
+    box-shadow: 15px 15px 30px rgba(0,0,0,0.5), inset -5px 0 15px rgba(0,0,0,0.05);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .binding {
+    width: 50px;
+    background: linear-gradient(to right, var(--leather) 0%, var(--leather-light) 80%, var(--leather) 100%);
+    border-right: 2px solid rgba(0,0,0,0.4);
+    box-shadow: 5px 0 10px rgba(0,0,0,0.2);
+    position: relative;
+    z-index: 10;
+  }
+
+  .binding::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    border-left: 2px dashed rgba(255,255,255,0.15);
+  }
+
+  .pages {
+    flex: 1;
+    padding: 40px 50px;
+    background-image: repeating-linear-gradient(transparent, transparent 31px, var(--line) 32px);
+    background-attachment: local;
+    line-height: 32px; 
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+  }
+
+  header h1 {
+    font-size: 2.5rem;
+    font-style: italic;
+    color: var(--accent);
+    margin-bottom: 10px;
+    line-height: 1.2;
+    text-shadow: 1px 1px 0px rgba(255,255,255,0.8);
+  }
+
+  header p { color: #665242; font-size: 1.1rem; line-height: 1.5; }
+
+  .filters {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 40px;
+    padding: 15px 20px;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+  }
+
+  .filter-group { flex: 1; display: flex; flex-direction: column; }
+  .filter-group label { font-size: 0.9rem; font-weight: bold; color: var(--leather); margin-bottom: 5px; line-height: 1;}
+  
+  select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 1rem;
+    background: #fff;
+    cursor: pointer;
+  }
+
+  .devocionales-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+  }
+
+  .card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 2px;
+    box-shadow: 2px 4px 10px rgba(0,0,0,0.08);
+    position: relative;
+    transition: transform 0.2s;
+    border-top: 15px solid var(--gold);
+    line-height: 1.4;
+  }
+
+  .card:hover { transform: translateY(-5px) rotate(1deg); }
+
+  .card h3 { font-size: 1.2rem; margin-bottom: 10px; margin-top: 5px; }
+  .card .meta { font-size: 0.85rem; color: #555; margin-bottom: 15px; }
+  .card .meta span { display: block; margin-bottom: 4px; }
+  .card p { font-size: 0.95rem; color: #444; margin-bottom: 20px; line-height: 1.5;}
+
+  .card-btn {
+    display: block;
+    text-align: center;
+    background: var(--leather);
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    transition: background 0.2s;
+  }
+  .card-btn:hover { background: var(--accent); }
+
+  .loader { text-align: center; grid-column: 1/-1; font-style: italic; color: #888; }
+
+  @media (max-width: 600px) {
+    .pages { padding: 30px 20px; }
+    header h1 { font-size: 2rem; }
+    .binding { width: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="notebook">
+  <div class="binding"></div>
+  <div class="pages">
+    
+    <header>
+      <h1>Diario de Devocionales</h1>
+      <p>Un espacio de reflexión y lectura.</p>
+    </header>
+
+    <div class="filters">
+      <div class="filter-group">
+        <label for="authorFilter">Autor</label>
+        <select id="authorFilter"><option value="all">Todos los Autores</option></select>
+      </div>
+      <div class="filter-group">
+        <label for="bookFilter">Libro</label>
+        <select id="bookFilter"><option value="all">Todos los Libros</option></select>
+      </div>
+    </div>
+
+    <main class="devocionales-grid" id="devocionalesGrid">
+      <div class="loader">Sincronizando devocionales...</div>
+    </main>
+
+  </div>
+</div>
+
+<script>
+  // =========================================================================
+  // ENLACE A TU BASE DE DATOS (GOOGLE SHEETS)
+  // Borra lo que está entre comillas y pega el enlace TSV que copiaste:
+  // =========================================================================
+  const urlGoogleSheets = 'AQUI_PEGARAS_TU_ENLACE_TSV';
+  
+  let devocionales = [];
+  const authorFilter = document.getElementById('authorFilter');
+  const bookFilter = document.getElementById('bookFilter');
+  const grid = document.getElementById('devocionalesGrid');
+
+  async function cargarDatos() {
+    try {
+      const respuesta = await fetch(urlGoogleSheets);
+      const texto = await respuesta.text();
+      
+      // Separar el texto línea por línea
+      const lineas = texto.split(/\r?\n/);
+      
+      // Quitar la primera línea (porque son los encabezados)
+      lineas.shift();
+
+      devocionales = lineas.filter(linea => linea.trim() !== '').map(linea => {
+        // Separar por las tabulaciones generadas por Google Sheets
+        const [titulo, autor, libro, archivo, descripcion] = linea.split('\t');
+        return {
+          titulo: titulo ? titulo.trim() : '',
+          autor: autor ? autor.trim() : 'Desconocido',
+          libro: libro ? libro.trim() : 'Varios',
+          archivo: archivo ? archivo.trim() : '#',
+          descripcion: descripcion ? descripcion.trim() : ''
+        };
+      });
+
+      populateFilters();
+      renderDevocionales();
+
+    } catch (error) {
+      grid.innerHTML = '<div class="loader" style="color:#9c3f19;">Hubo un error conectando con la base de datos. Verifica el enlace.</div>';
+    }
+  }
+
+  function populateFilters() {
+    const autores = [...new Set(devocionales.map(d => d.autor))].sort();
+    const libros = [...new Set(devocionales.map(d => d.libro))].sort();
+
+    authorFilter.innerHTML = '<option value="all">Todos los Autores</option>';
+    bookFilter.innerHTML = '<option value="all">Todos los Libros</option>';
+
+    autores.forEach(a => authorFilter.add(new Option(a, a)));
+    libros.forEach(l => bookFilter.add(new Option(l, l)));
+  }
+
+  function renderDevocionales() {
+    const sAuthor = authorFilter.value;
+    const sBook = bookFilter.value;
+
+    const filtrados = devocionales.filter(d => 
+      (sAuthor === 'all' || d.autor === sAuthor) && 
+      (sBook === 'all' || d.libro === sBook)
+    );
+
+    grid.innerHTML = filtrados.length === 0 
+      ? '<p class="loader">No hay resultados para esta búsqueda.</p>' 
+      : '';
+
+    filtrados.forEach(dev => {
+      grid.innerHTML += `
+        <div class="card">
+          <h3>${dev.titulo}</h3>
+          <div class="meta">
+            <span>✍️ ${dev.autor}</span>
+            <span>📖 ${dev.libro}</span>
+          </div>
+          <p>${dev.descripcion}</p>
+          <a href="${dev.archivo}" class="card-btn">Abrir Devocional</a>
+        </div>
+      `;
+    });
+  }
+
+  authorFilter.addEventListener('change', renderDevocionales);
+  bookFilter.addEventListener('change', renderDevocionales);
+
+  // Iniciar la carga de datos al abrir la página
+  if(urlGoogleSheets !== 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRuiI5FPkbWnIzft7pWwhgWC7zuyzgV7L-2XS_eY9sFXENI1ReeR56JyjENf6Ge1U2X2E0fs5wf9O-w/pub?output=tsv') {
+    cargarDatos();
+  } else {
+    grid.innerHTML = '<div class="loader">Falta colocar el enlace de Google Sheets en el código.</div>';
+  }
+</script>
+</body>
+</html>
