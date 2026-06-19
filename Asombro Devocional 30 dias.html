@@ -1,0 +1,1738 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asombro — Devocional 30 Días · Paul David Tripp</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+  :root {
+    --ink:        #1a1612;
+    --parchment:  #f8f4ee;
+    --gold:       #b8892a;
+    --gold-light: #e8d49a;
+    --gold-pale:  #f5edda;
+    --ember:      #7a3521;
+    --sage:       #3d5a47;
+    --cream:      #fdf9f3;
+    --muted:      #7a6f63;
+    --border:     #ddd4c2;
+    --done-bg:    #eef4ee;
+    --done-check: #3d5a47;
+    --radius:     10px;
+    --shadow:     0 2px 18px rgba(26,22,18,0.09);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--parchment);
+    color: var(--ink);
+    min-height: 100vh;
+    line-height: 1.65;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(160deg, #1a1612 0%, #2e2219 60%, #3d2b12 100%);
+    color: var(--parchment);
+    text-align: center;
+    padding: 56px 24px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 50% at 50% 80%, rgba(184,137,42,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-icon {
+    font-size: 2.6rem;
+    margin-bottom: 16px;
+    display: block;
+    filter: drop-shadow(0 0 12px rgba(184,137,42,0.6));
+  }
+  .hero h1 {
+    font-family: 'Lora', Georgia, serif;
+    font-size: clamp(2rem, 6vw, 3rem);
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    margin-bottom: 10px;
+    color: #fff;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+  .hero .subtitle {
+    font-size: 0.92rem;
+    color: rgba(248,244,238,0.65);
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .hero .author {
+    font-family: 'Lora', Georgia, serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--gold-light);
+    opacity: 0.85;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap {
+    background: #2a2018;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-bottom: 1px solid rgba(184,137,42,0.2);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .progress-bar-outer {
+    flex: 1;
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 3px;
+    transition: width 0.5s ease;
+  }
+  .progress-text {
+    font-size: 0.82rem;
+    color: var(--gold-light);
+    font-weight: 500;
+    white-space: nowrap;
+    min-width: 80px;
+    text-align: right;
+  }
+
+  /* ── LAYOUT ── */
+  .main {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  /* ── SECTION HEADERS ── */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 40px 0 16px;
+  }
+  .section-label span {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── DAY CARD ── */
+  .day-card {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+  .day-card:hover { box-shadow: 0 4px 28px rgba(26,22,18,0.14); }
+
+  .day-card.completed {
+    background: var(--done-bg);
+    border-color: rgba(61,90,71,0.35);
+  }
+  .day-card.completed .day-header { opacity: 0.75; }
+
+  /* ── DAY HEADER ── */
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 20px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: background 0.18s;
+  }
+  .day-header:hover { background: rgba(184,137,42,0.05); }
+  .day-card.completed .day-header:hover { background: rgba(61,90,71,0.07); }
+
+  .day-num {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Lora', Georgia, serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--gold);
+    transition: all 0.25s;
+    background: transparent;
+  }
+  .day-card.completed .day-num {
+    background: var(--done-check);
+    border-color: var(--done-check);
+    color: #fff;
+    font-size: 1.25rem;
+  }
+
+  .day-meta {
+    flex: 1;
+    min-width: 0;
+  }
+  .day-tag {
+    font-size: 0.71rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 2px;
+  }
+  .day-title {
+    font-family: 'Lora', Georgia, serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .day-card.completed .day-title { color: var(--sage); }
+
+  .day-chevron {
+    flex-shrink: 0;
+    color: var(--muted);
+    font-size: 1.1rem;
+    transition: transform 0.28s ease;
+  }
+  .day-card.open .day-chevron { transform: rotate(180deg); }
+
+  /* ── DAY BODY ── */
+  .day-body {
+    display: none;
+    border-top: 1px solid var(--border);
+  }
+  .day-card.open .day-body { display: block; }
+
+  /* ── VERSE BOX ── */
+  .verse-box {
+    background: linear-gradient(135deg, #2a2018 0%, #1a1612 100%);
+    color: var(--parchment);
+    padding: 24px 24px 20px;
+    position: relative;
+  }
+  .verse-box::before {
+    content: '"';
+    position: absolute;
+    top: 8px;
+    left: 18px;
+    font-family: 'Lora', Georgia, serif;
+    font-size: 4rem;
+    color: var(--gold);
+    opacity: 0.35;
+    line-height: 1;
+  }
+  .verse-text {
+    font-family: 'Lora', Georgia, serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    padding-left: 8px;
+    color: var(--parchment);
+  }
+  .verse-ref {
+    margin-top: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--gold-light);
+    text-transform: uppercase;
+    padding-left: 8px;
+  }
+
+  /* ── CONTENT SECTIONS ── */
+  .content-area {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .section-block { }
+  .section-block h3 {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .section-block h3::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--gold-pale);
+    max-width: 40px;
+  }
+  .section-block p {
+    font-size: 0.965rem;
+    color: #3a3028;
+    line-height: 1.72;
+  }
+
+  /* ── REFLECTION QUESTIONS ── */
+  .questions-block { }
+  .questions-block h3 {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ember);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .questions-block h3::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(122,53,33,0.15);
+    max-width: 40px;
+  }
+  .question-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .question-item {
+    background: var(--parchment);
+    border-left: 3px solid var(--ember);
+    padding: 10px 14px;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.93rem;
+    color: #3a3028;
+    line-height: 1.55;
+  }
+
+  /* ── PRAYER SECTION ── */
+  .prayer-block {
+    background: linear-gradient(135deg, rgba(61,90,71,0.08) 0%, rgba(61,90,71,0.04) 100%);
+    border: 1px solid rgba(61,90,71,0.2);
+    border-radius: 8px;
+    padding: 18px;
+  }
+  .prayer-block h3 {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .prayer-block h3::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(61,90,71,0.2);
+    max-width: 40px;
+  }
+  .prayer-block p {
+    font-family: 'Lora', Georgia, serif;
+    font-style: italic;
+    font-size: 0.97rem;
+    color: #2d4037;
+    line-height: 1.7;
+  }
+
+  /* ── MARK DONE BUTTON ── */
+  .done-row {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .done-label {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .btn-done {
+    background: var(--gold);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 22px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.18s, transform 0.1s;
+    letter-spacing: 0.02em;
+  }
+  .btn-done:hover { background: #9c7420; }
+  .btn-done:active { transform: scale(0.97); }
+
+  .btn-undo {
+    background: transparent;
+    color: var(--sage);
+    border: 1.5px solid var(--sage);
+    border-radius: 8px;
+    padding: 9px 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.18s;
+    letter-spacing: 0.02em;
+  }
+  .btn-undo:hover { background: var(--done-bg); }
+
+  .completed-badge {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--sage);
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+  .completed-badge span { font-size: 1rem; }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    padding: 32px 20px;
+    font-size: 0.8rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+  }
+  .footer em {
+    font-family: 'Lora', Georgia, serif;
+    font-style: italic;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 560px) {
+    .day-title { font-size: 0.96rem; }
+    .content-area { padding: 16px; }
+    .verse-box { padding: 20px 16px 16px; }
+    .done-row { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="hero-icon">✦</span>
+  <p class="subtitle">Devocional · 30 Días</p>
+  <h1><em>Asombro</em></h1>
+  <p class="author">basado en el libro de Paul David Tripp</p>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-bar-outer">
+    <div class="progress-bar-inner" id="progressBar" style="width:0%"></div>
+  </div>
+  <div class="progress-text" id="progressText">0 de 30</div>
+</div>
+
+<div class="main">
+
+  <!-- ─── SEMANA 1 ─── -->
+  <div class="section-label"><span>Semana 1 — Diseñados para el Asombro</span></div>
+
+  <!-- DÍA 1 -->
+  <div class="day-card" id="day-1">
+    <div class="day-header" onclick="toggleDay(1)">
+      <div class="day-num" id="num-1">1</div>
+      <div class="day-meta">
+        <span class="day-tag">Humanidad</span>
+        <div class="day-title">Fuiste creado para ser asombrado</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">¿De qué sirve ganar el mundo entero si se pierde la vida?</p>
+        <p class="verse-ref">Marcos 8:36</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>Cada ser humano que ha existido comparte algo en común: desde la niña que saborea su primer helado hasta el anciano que no puede dejar de escuchar su música favorita, todos buscan ser asombrados. No es un asunto cultural, de edad o de género. Es parte de cómo Dios nos hizo. Fuimos diseñados para el asombro.<br><br>Pero aquí está la tragedia que Tripp describe: el hombre que lo tenía todo —dinero, éxito, casa, familia, clubs exclusivos— era el más vacío. Preguntó: "¿Cómo es que lo tengo todo y me siento tan vacío?". Era una pregunta profundamente teológica, aunque él no lo sabía. Su problema no era falta de cosas asombrosas a su alrededor. Era que buscaba en las cosas creadas lo que solo el Creador puede dar.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿En qué área de tu vida sientes más ese vacío que Marcos 8:36 describe? ¿Por qué crees que esa área te consume tanto?</div>
+            <div class="question-item">Cuando dices "si tan solo tuviera _______, entonces sería feliz", ¿qué llena ese espacio en blanco? ¿Qué te dice eso sobre dónde estás buscando asombro?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Señor, reconozco que fui creado para ser asombrado, y que con demasiada frecuencia busco ese asombro en lugares equivocados. Abre mis ojos hoy para que pueda ver que solo Tú eres la fuente verdadera de todo lo que mi corazón anhela. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-1">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(1)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 2 -->
+  <div class="day-card" id="day-2">
+    <div class="day-header" onclick="toggleDay(2)">
+      <div class="day-num" id="num-2">2</div>
+      <div class="day-meta">
+        <span class="day-tag">Humanidad</span>
+        <div class="day-title">El asombro que da forma a tu vida</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">Todo asombro creado fue diseñado para señalarte hacia el único digno de capturar y controlar el asombro que busca tu corazón.</p>
+        <p class="verse-ref">Paul David Tripp — Asombro, cap. 1</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>Tu búsqueda de asombro no es neutral. Lo que te asombra moldea cada decisión de tu vida. Si vives asombrado por las cosas materiales, gastarás dinero que no tienes para obtenerlas, trabajarás demasiado para pagarlas, y nunca estarás satisfecho. Si vives asombrado por el poder, manipularás relaciones para obtenerlo. El asombro es el motor invisible detrás de todo lo que dices, piensas y haces.<br><br>Pero Dios no creó el mundo asombroso como un fin en sí mismo. Lo creó como un cartel que te señala hacia Él. El problema no es que admires un atardecer; el problema es detenerte en el cartel y olvidarte a dónde apunta. El asombro horizontal tiene un solo propósito: estimular el asombro vertical.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿Qué te produce los momentos de mayor gozo y las tristezas más profundas? ¿Qué dice eso sobre dónde buscas tu asombro?</div>
+            <div class="question-item">Piensa en un área donde te enojas con facilidad. ¿Hay un "asombro equivocado" detrás de ese enojo —algo que deseas tanto que te enfureces cuando alguien lo amenaza?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Padre, ayúdame a ver todos los regalos de Tu creación como carteles que señalan hacia Ti, no como destinos en sí mismos. Que la belleza de este mundo encienda en mí adoración por Ti, no adicción a las cosas. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-2">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(2)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 3 -->
+  <div class="day-card" id="day-3">
+    <div class="day-header" onclick="toggleDay(3)">
+      <div class="day-num" id="num-3">3</div>
+      <div class="day-meta">
+        <span class="day-tag">Guerra</span>
+        <div class="day-title">La guerra que nadie ve pero todos pelean</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">Se hablará del esplendor de Tu gloria y majestad, y yo meditaré en Tus obras maravillosas.</p>
+        <p class="verse-ref">Salmo 145:5</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>Hay una guerra que ha determinado el curso de toda la historia humana, y sin embargo casi nadie habla de ella. No es una guerra política ni militar. Es la guerra por el asombro: la batalla por el dominio y el control de la capacidad de asombro que Dios estableció en cada corazón humano.<br><br>Desde la caída en el Jardín del Edén, nuestra capacidad de asombro —que fue diseñada para conducirnos a Dios en adoración— es secuestrada por otras cosas. El pecado de Adán y Eva no fue principalmente comer fruta prohibida; fue querer la posición de Dios. Querían ser como Él. Ese fue el primer momento en que el asombro personal superó el asombro por Dios. Y desde entonces, esa guerra se libra en el corazón de cada ser humano.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿En qué parte de tu vida sientes que el "asombro equivocado" tiene más dominio sobre ti? ¿Reconocimiento, control, posesiones, apariencia?</div>
+            <div class="question-item">¿Cómo se ve el "asombro por uno mismo" en tu vida diaria? ¿Cuándo exiges que la vida, las personas o Dios se ajusten a tus planes?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Señor, reconozco que en lo profundo de mi corazón hay una tendencia a poner mi gloria sobre la Tuya. Gracias porque Tu gracia es infinitamente más poderosa que el asombro equivocado que secuestra mi corazón. Rescátame hoy. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-3">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(3)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 4 -->
+  <div class="day-card" id="day-4">
+    <div class="day-header" onclick="toggleDay(4)">
+      <div class="day-num" id="num-4">4</div>
+      <div class="day-meta">
+        <span class="day-tag">Guerra</span>
+        <div class="day-title">El asombro equivocado en la Biblia</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">Al ver el Señor que la maldad del ser humano en la tierra era muy grande, y que todos sus pensamientos tendían siempre hacia el mal, se arrepintió de haber hecho al ser humano en la tierra, y le dolió en el corazón.</p>
+        <p class="verse-ref">Génesis 6:5-6</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>Las páginas de la Biblia están salpicadas de historias del asombro equivocado. Caín adoró lo suficiente como para presentar una ofrenda, pero no lo suficiente como para someter su asombro a Dios; por eso, los celos lo llevaron al primer asesinato. Israel fundió oro para crear un becerro justo cuando Dios estaba dándole Su ley a Moisés. El ejército de Israel se paralizó cuarenta días frente a Goliat porque su asombro estaba puesto en el tamaño del gigante, no en el tamaño de Dios.<br><br>Pero David llegó y vio el mismo gigante con ojos diferentes. "El Señor que me libró de las garras del leon también me librará de este". El asombro por Dios produce valor donde el asombro equivocado produce terror. Esta es la diferencia entre vivir y meramente sobrevivir.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿Hay un "Goliat" en tu vida ahora mismo —un problema que parece más grande que tu capacidad de enfrentarlo? ¿Cómo cambia ese panorama cuando lo evalúas a la luz de quién es Dios?</div>
+            <div class="question-item">¿Cuánto de tu enojo, tus decisiones o tus miedos en los últimos meses ha tenido que ver con el Reino de Dios, y cuánto con tus propios deseos y miedos personales?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Dios, cuando miro los problemas que enfrento hoy, soy tentado a evaluar la situación sin Tí. Recuérdame que no estoy yo contra mis circunstancias, sino mis circunstancias contra el Dios que me acompaña. Dame los ojos de David hoy. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-4">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(4)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 5 -->
+  <div class="day-card" id="day-5">
+    <div class="day-header" onclick="toggleDay(5)">
+      <div class="day-num" id="num-5">5</div>
+      <div class="day-meta">
+        <span class="day-tag">Ministerio</span>
+        <div class="day-title">El gran propósito del ministerio</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">Cada generación celebrará Tus obras y proclamará Tus proezas.</p>
+        <p class="verse-ref">Salmo 145:4</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>Tripp confiesa que estuvo en el ministerio por años sin entenderlo realmente. Hacía muchas cosas relacionadas al evangelio, pero le faltaba una misión central. Hasta que llegó al Salmo 145 y fue transformado por una sola frase: "Cada generación celebrará Tus obras y proclamará Tus proezas".<br><br>Comprendió que todo ministerio —la predicación, la crianza, el servicio, la consejería— tiene una sola misión: transmitir el asombro por Dios de generación en generación. El adulterio es un problema de asombro. Las deudas son un problema de asombro. El materialismo, la glotonería, el temor al hombre, el orgullo: todos son síntomas del mismo problema central —hemos olvidado quién es Dios.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿Cómo describes tu "misión central" como creyente, padre, cónyuge o profesional? ¿Está centrada en transmitir el asombro por Dios?</div>
+            <div class="question-item">¿En qué área de tu vida hay evidencia de que has "olvidado el asombro"? ¿Cómo se manifiesta ese olvido en tu comportamiento?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Señor, que cada cosa que haga hoy —en el trabajo, en el hogar, con las personas que me rodean— sea una oportunidad para señalar Tu gloria. Que mi vida no sea solo religiosa, sino un testigo constante de que Tú eres asombroso. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-5">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(5)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 6 -->
+  <div class="day-card" id="day-6">
+    <div class="day-header" onclick="toggleDay(6)">
+      <div class="day-num" id="num-6">6</div>
+      <div class="day-meta">
+        <span class="day-tag">Ministerio</span>
+        <div class="day-title">El mayor peligro en el ministerio: tú mismo</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">Aquel que ya no pueda detenerse a maravillarse y asombrarse es como un muerto; sus ojos están cerrados.</p>
+        <p class="verse-ref">Albert Einstein</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>Tripp lo dice con franqueza que incomoda: el mayor peligro para su ministerio era él mismo. La familiaridad con las verdades de Dios puede llevar a perder el asombro. Y cuando el asombro por Dios se va, el espacio lo llena el asombro por uno mismo: la arrogancia teológica, el control, la defensiva, el orgullo, la autosuficiencia.<br><br>Solo el asombro por Dios tiene el poder de protegernos de nosotros mismos. Cuando me asombro genuinamente por la gloria de Dios, me siento pequeño —y eso es bueno. Me hace humilde, paciente, bondadoso, dispuesto a aprender. El temor solo se vence con temor: solo el asombro por Dios puede quitarle el poder al asombro por uno mismo.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿Hay algún área en tu vida donde la "familiaridad" te ha hecho perder el asombro por Dios? ¿La oración, la lectura bíblica, la iglesia?</div>
+            <div class="question-item">¿Cuándo fue la última vez que sentiste genuinamente pequeño ante la grandeza de Dios? ¿Qué produjo ese momento?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Señor, guárdame de la trampa de conocer mucho sobre Ti pero conocerte poco. Que la familiaridad con Tu Palabra nunca apague mi asombro por Ti. Hazme pequeño ante Tu grandeza hoy. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-6">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(6)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 7 -->
+  <div class="day-card" id="day-7">
+    <div class="day-header" onclick="toggleDay(7)">
+      <div class="day-num" id="num-7">7</div>
+      <div class="day-meta">
+        <span class="day-tag">Reemplazo</span>
+        <div class="day-title">El gran reemplazo: vivir para uno mismo</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">Cambiaron la verdad de Dios por la mentira, adorando y sirviendo a los seres creados antes que al Creador, quien es bendito por siempre.</p>
+        <p class="verse-ref">Romanos 1:25</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>Es humanamente imposible vivir sin asombro. Siempre estamos asombrados por algo. Y todo pecador rápidamente reemplaza el asombro por el Creador con el asombro por algo creado. En el fondo, ese reemplazo siempre termina igual: nos ponemos a nosotros mismos en el centro.<br><br>El anzuelo en el Jardín del Edén no fue el fruto en sí —fue la promesa de ser como Dios. Eva no solo quería fruta; quería la posición del Creador. Y eso es exactamente lo que el pecado nos hace a todos: nos convierte en personas que exigen control soberano, que viven para su propia gloria, que establecen sus propias reglas, que se enojan cuando las cosas no salen como quieren.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿En qué áreas de tu vida actúas como si fueras el soberano —exigiendo que la vida, las personas y Dios se ajusten a tus planes?</div>
+            <div class="question-item">¿Hay alguna persona en tu vida de quien secretamente esperas que te dé lo que solo Dios puede dar (significado, aceptación, valor)?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Padre, confieso que con demasiada frecuencia me pongo en el centro de mi historia. Gracias porque Cristo murió para que ya no viva para mí mismo, sino para Aquel que murió y resucitó por mí. Ayúdame a vivir esa realidad hoy. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-7">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(7)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SEMANA 2 ─── -->
+  <div class="section-label"><span>Semana 2 — El Asombro Equivocado en lo Cotidiano</span></div>
+
+  <!-- DÍA 8 -->
+  <div class="day-card" id="day-8">
+    <div class="day-header" onclick="toggleDay(8)">
+      <div class="day-num" id="num-8">8</div>
+      <div class="day-meta">
+        <span class="day-tag">Reemplazo</span>
+        <div class="day-title">La adicción horizontal</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">El mundo nunca quedará hambriento por falta de curiosidades, pero sí por falta de asombro.</p>
+        <p class="verse-ref">G. K. Chesterton</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>Tripp describe historias de personas rotas por el mismo problema: Pedro, sin trabajo 18 meses por un ascenso que no llegó; Laura, cerrando su corazón después de que una amiga la hirió; Jorge, esperando furioso a su hijo para "cobrar" la falta de respeto; Caleb, pensando en dejar de respirar porque nadie lo nota.<br><br>A primera vista parecen problemas muy diferentes. Pero todos tienen la misma raíz: han atado su deleite y satisfacción a cosas o personas, y esas cosas los han decepcionado. El asombro horizontal es adictivo precisamente porque las cosas que busca no tienen la capacidad de darnos lo que solo Dios puede dar. Entonces volvemos una y otra vez, necesitando más y más, sin jamás quedar satisfechos.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿Hay algo en tu vida a lo que vuelves repetidamente buscando satisfacción pero que nunca te la da completamente?</div>
+            <div class="question-item">¿Cómo se ve en tu vida la diferencia entre disfrutar algo (un regalo de Dios) y depender de eso para sentirte bien?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Señor, muéstrame las áreas donde estoy buscando en las cosas lo que solo Tú puedes darme. Que el asombro por Ti sea tan real y tan satisfactorio que no necesite buscar sustitutos. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-8">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(8)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 9 -->
+  <div class="day-card" id="day-9">
+    <div class="day-header" onclick="toggleDay(9)">
+      <div class="day-num" id="num-9">9</div>
+      <div class="day-meta">
+        <span class="day-tag">Amnesia</span>
+        <div class="day-title">El olvido del asombro</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">Dios quiere que cada momento del ministerio inspire en Su pueblo asombro por Él. Esto debe suceder una y otra vez, porque tendemos a olvidar.</p>
+        <p class="verse-ref">Paul David Tripp — Asombro, cap. 3</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>La amnesia del asombro es tan peligrosa precisamente porque es silenciosa. No despertamos un día decidiendo olvidar a Dios. Sucede gradualmente, en medio de los quehaceres cotidianos, las presiones del trabajo, las preocupaciones del hogar. Sin darnos cuenta, pasamos días —a veces semanas— sin que Dios cruce genuinamente por nuestra mente.<br><br>Tripp dice que necesitamos recordar una y otra vez. Por eso el Salmo 145 habla de que cada generación proclame las obras de Dios: porque somos propensos al olvido. La gracia presente de Dios no es solo perdón pasado; es la obra continua que abre ojos ciegos y recaptura corazones errantes.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿Con qué frecuencia Dios genuinamente cruza por tu mente durante un día laboral ordinario? ¿Qué lo desplaza?</div>
+            <div class="question-item">¿Qué prácticas concretas podrías adoptar para recordar la presencia y la gloria de Dios en tu día a día?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Señor, guárdame del peligro del olvido. Que Tu presencia sea tan real para mí que no pueda pasar un día sin reconocerla. Abre mis ojos para verte en lo ordinario. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-9">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(9)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 10 -->
+  <div class="day-card" id="day-10">
+    <div class="day-header" onclick="toggleDay(10)">
+      <div class="day-num" id="num-10">10</div>
+      <div class="day-meta">
+        <span class="day-tag">Transgresión</span>
+        <div class="day-title">El pecado como robo de gloria</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">Nabucodonosor alzó los ojos al cielo, y la razón le volvió. Entonces alabé al Altísimo; honré y glorifiqué al que vive para siempre.</p>
+        <p class="verse-ref">Daniel 4:34</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>Nabucodonosor preguntó: "¿No es esta la gran Babilonia que yo he edificado para mi gloria?". Y Dios lo humilló tan profundamente que terminó comiendo pasto como un animal. El propósito no era destruirlo, sino liberarlo: liberarlo de la esclavitud de robarse la gloria que solo a Dios le pertenece.<br><br>Tripp dice que quizás robamos más gloria de la que pensamos. Nos atribuimos mérito por lo que solo Dios puede hacer. Le damos el crédito a las circunstancias cuando realmente le pertenece a Dios. Vivimos como si los logros fueran nuestros, olvidando que cada don, cada capacidad y cada oportunidad son regalos inmerecidos de Su mano.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿Hay algún logro reciente del que te has sentido orgulloso sin reconocer a Dios como la fuente? ¿Cómo cambiaría tu perspectiva si lo vieras como un regalo?</div>
+            <div class="question-item">La confesión de Nabucodonosor dice que "ninguno de los pueblos merece ser tomado en cuenta". ¿Qué tan difícil te resulta aplicar eso a ti mismo?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Señor, confieso que con frecuencia me atribuyo méritos que Te pertenecen a Ti. Todo lo que tengo —mis dones, mis logros, mi trabajo, mi familia— viene de Tu mano. Ayúdame a vivir con la gratitud y la humildad de alguien que sabe que todo es regalo. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-10">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(10)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 11 -->
+  <div class="day-card" id="day-11">
+    <div class="day-header" onclick="toggleDay(11)">
+      <div class="day-num" id="num-11">11</div>
+      <div class="day-meta">
+        <span class="day-tag">Queja</span>
+        <div class="day-title">La queja es profundamente teológica</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">¿Por qué gastan dinero en lo que no es pan, y su salario en lo que no satisface?</p>
+        <p class="verse-ref">Isaías 55:2</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>El lenguaje universal de los pecadores en este mundo caído es la queja. Es asombroso que para nosotros sea más natural la queja que el agradecimiento, la murmuración que la alabanza. ¿Por qué? Porque la queja es un síntoma de asombro equivocado. Cuando estoy en el centro, cuando creo merecer comodidad y previsibilidad, cuando mis deseos dominan mi corazón, tengo mucho de qué quejarme.<br><br>Toda queja y todo gruñido es profundamente teológico, dice Tripp. No nos quejamos principalmente porque la vida sea difícil. Nos quejamos porque tenemos un problema de asombro que genera insatisfacción. El asombro por Dios produce gratitud; la gratitud produce gozo; el gozo produce contentamiento.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">Piensa en las quejas que has expresado esta semana —con la familia, el trabajo, la vida. ¿Qué revela cada queja sobre dónde estás buscando tu asombro?</div>
+            <div class="question-item">¿Cómo sería tu día si lo comenzaras intencionalmente reconociendo lo que ya se te ha dado, en lugar de enfocarte en lo que te falta?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Señor, perdóname por las veces que la queja ha reemplazado la alabanza en mi boca. Que el asombro por Tu bondad sea tan real que transforme mi vocabulario. Haz de mí una persona agradecida. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-11">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(11)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 12 -->
+  <div class="day-card" id="day-12">
+    <div class="day-header" onclick="toggleDay(12)">
+      <div class="day-num" id="num-12">12</div>
+      <div class="day-meta">
+        <span class="day-tag">Queja</span>
+        <div class="day-title">¿Es Dios bueno, fiel y poderoso?</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">El Señor es clemente y compasivo, lento para la ira y grande en amor. El Señor es bueno con todos; Él se compadece de toda Su creación.</p>
+        <p class="verse-ref">Salmo 145:8-9</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>Tripp plantea cinco preguntas que revelan dónde está anclado nuestro asombro: ¿Es Dios bueno? ¿Son Sus promesas confiables? ¿Está en control? ¿Tiene el poder necesario? ¿Tiene cuidado de mí? Cuando la respuesta a estas preguntas se tambalea, el asombro por Dios se erosiona y el terreno queda fértil para la ansiedad, el control y la queja.<br><br>El tamaño de nuestra esperanza es directamente proporcional al nivel de nuestro asombro por el cuidado de Dios. Si mido el carácter de Dios evaluando mis circunstancias, siempre llegaré a conclusiones distorsionadas. Pero si evalúo mis circunstancias a la luz de Su carácter revelado, entonces tengo razones para el contentamiento en cualquier situación.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿Cuál de las cinco preguntas de Tripp (bondad, promesas, control, poder, cuidado) te resulta más difícil de responder afirmativamente en este momento de tu vida? ¿Por qué?</div>
+            <div class="question-item">¿Cómo cambiaría tu perspectiva de una situación difícil actual si la evaluaras desde el carácter de Dios, en vez de desde tus circunstancias?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Padre, en las áreas donde dudo de Tu bondad o Tu cuidado, habla a mi corazón hoy. No permitas que mis circunstancias sean el espejo donde mido Tu carácter. Que Tu Palabra sea el lente que da forma a todo lo que veo. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-12">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(12)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 13 -->
+  <div class="day-card" id="day-13">
+    <div class="day-header" onclick="toggleDay(13)">
+      <div class="day-num" id="num-13">13</div>
+      <div class="day-meta">
+        <span class="day-tag">Materialismo</span>
+        <div class="day-title">El problema con las cosas materiales</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">¿Por qué gastan dinero en lo que no es pan, y su salario en lo que no satisface? Escúchenme bien, y comerán lo que es bueno, y se deleitarán con manjares deliciosos.</p>
+        <p class="verse-ref">Isaías 55:2</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>El materialismo no es principalmente un problema con las cosas; es un problema de asombro. No podemos controlar nuestra lujuria por las cosas porque nuestra capacidad de asombro ha sido secuestrada. Todos buscamos vida —contentamiento, significado, identidad, paz— y hay solo dos lugares donde buscarla: en el Creador o en las cosas que Él creó.<br><br>Las cosas materiales tienen un propósito triple en el plan de Dios: sustento (lo físico nos mantiene vivos), deleite (Dios creó la belleza para nuestro gozo) y recordatorio (cada cosa gloriosa señala hacia su Creador). El error es cuando el "asombro para recordar" se convierte en el "asombro para adorar" —cuando adoramos la creación y olvidamos al Creador.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿Hay alguna posesión, experiencia o comodidad que estés buscando actualmente con la expectativa (quizás inconsciente) de que te dará paz o satisfacción?</div>
+            <div class="question-item">¿Cuándo fue la última vez que disfrutaste algo hermoso del mundo físico y conscientemente lo usaste como ocasión para adorar a Dios?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Señor, que cada cosa bella que disfrute hoy me lleve a Tí. Que nunca me detenga en el cartel y olvide el destino. Que la creación sea siempre para mí una ventana hacia Tu gloria, no un sustituto de ella. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-13">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(13)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 14 -->
+  <div class="day-card" id="day-14">
+    <div class="day-header" onclick="toggleDay(14)">
+      <div class="day-num" id="num-14">14</div>
+      <div class="day-meta">
+        <span class="day-tag">Materialismo</span>
+        <div class="day-title">Gracia para la lucha con lo material</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">La gracia de Dios busca el rescate, la transformación y la liberación de tu corazón. La gracia de Dios obra para liberarte del lazo de tus propios deseos.</p>
+        <p class="verse-ref">Paul David Tripp — Asombro, cap. 8</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>Tripp es honesto: "Hay días en que no me importa la redención; lo único que quiero es un buen filete. Hay días en que no me importa Dios; solo quiero que haya buen clima." Es difícil escuchar eso de un autor cristiano, pero es profundamente liberador. Porque si alguien como Tripp lucha con esto, quizás yo no soy el único.<br><br>Y aquí está la buena noticia que hace que este libro no sea aplastante: tú y yo no tenemos ninguna capacidad para liberarnos de nosotros mismos, pero la gracia de Dios sí puede. No es una gracia que se gana con oraciones o disciplinas; es el regalo eterno de Dios. Puedes correr a Él con tu materialismo, sin esconderte, sin justificarte, y hallarás misericordia.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿En qué áreas de lo material has sentido que la lucha parece ser más fuerte que tu voluntad? ¿Has llevado eso a Dios con honestidad?</div>
+            <div class="question-item">¿Cómo cambia tu relación con la lucha cuando recuerdas que la gracia de Dios pelea por ti incluso cuando tú no peleas por ti mismo?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Padre, no escondo mi lucha hoy. En las áreas donde el mundo físico me tiene cautivo, corro a Ti —no huyo de Ti. Gracias porque Tu gracia es más poderosa que mi debilidad. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-14">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(14)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SEMANA 3 ─── -->
+  <div class="section-label"><span>Semana 3 — Crecimiento, Cosmovisión e Iglesia</span></div>
+
+  <!-- DÍA 15 -->
+  <div class="day-card" id="day-15">
+    <div class="day-header" onclick="toggleDay(15)">
+      <div class="day-num" id="num-15">15</div>
+      <div class="day-meta">
+        <span class="day-tag">Crecimiento</span>
+        <div class="day-title">El pecado nos hace quebradores del asombro</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">Cristo murió por todos, para que los que viven ya no vivan para sí, sino para el que murió por ellos y fue resucitado.</p>
+        <p class="verse-ref">2 Corintios 5:15</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>El pecado no solo nos hace quebrantadores de la ley. Nos hace quebrantadores del asombro. El pecado captura y redirige el sistema motivacional de nuestros corazones. Cambia cómo operamos, y eso afecta toda nuestra vida. En el fondo, personas que fueron diseñadas para ser impulsadas por el asombro por Dios son redirigidas hacia el asombro por sí mismas.<br><br>El crecimiento espiritual, por tanto, no es principalmente aprender más teología o seguir más reglas. Es recapturar el asombro. Cuanto más el asombro por Dios gobierne las motivaciones de tu corazón, mayor será tu amor por Su Reino, tu deleite en Su obra, tu voluntad de sometrte a Sus caminos. La santificación es la guerra de Dios por el asombro de tu corazón.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿Hay algo que te impide crecer como creyente? ¿Podría estar relacionado con un problema de asombro —con quién o qué realmente te motiva?</div>
+            <div class="question-item">¿Cómo describes tu crecimiento espiritual actualmente: ¿como aprendizaje de información, seguimiento de reglas, o transformación del corazón?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Señor, que Tu Espíritu obre en lo profundo de mi motivación hoy. No solo quiero conocer más sobre Ti; quiero ser transformado por el asombro hacia Ti. Recaptura mi corazón. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-15">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(15)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 16 -->
+  <div class="day-card" id="day-16">
+    <div class="day-header" onclick="toggleDay(16)">
+      <div class="day-num" id="num-16">16</div>
+      <div class="day-meta">
+        <span class="day-tag">Crecimiento</span>
+        <div class="day-title">Los dos retratos de Gálatas 5</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">El fruto del Espíritu es amor, alegría, paz, paciencia, amabilidad, bondad, fidelidad, humildad y dominio propio.</p>
+        <p class="verse-ref">Gálatas 5:22-23</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>Gálatas 5 presenta dos retratos. El primero es la vida gobernada por el asombro propio: inmoralidad, celos, arrebatos de ira, disensiones. Lo que todos tienen en común es el egoísmo. El segundo retrato —amor, gozo, paz, paciencia— tiene algo en común también: todas son el resultado de vivir para algo más grande que uno mismo.<br><br>Tripp lo hace práctico: ¿Por qué no puedes amar? Porque el amor propio se interpone. ¿Por qué no tienes paz? Porque cuando vives para ti, todos parecen estar en tu camino. ¿Por qué no tienes paciencia? Porque esperar te recuerda que no estás al mando. El fruto del Espíritu no es una meta que alcanzar; es el resultado de que el asombro por Dios vaya reemplazando el asombro por uno mismo.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿Cuál de los frutos del Espíritu es más escaso en tu vida ahora mismo? ¿Cómo podría estar relacionado con un problema de asombro?</div>
+            <div class="question-item">¿Cuándo fue la última vez que actuaste con paciencia, amor o gozo genuino hacia alguien que te costaba? ¿Qué lo hizo posible?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Espíritu Santo, haz en mí lo que no puedo hacer por mí mismo. Recaptura mi motivación. Que el asombro por el Padre produzca en mí el carácter de Cristo. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-16">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(16)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 17 -->
+  <div class="day-card" id="day-17">
+    <div class="day-header" onclick="toggleDay(17)">
+      <div class="day-num" id="num-17">17</div>
+      <div class="day-meta">
+        <span class="day-tag">Cosmovisión</span>
+        <div class="day-title">Isaías 40: la cosmovisión que cambia todo</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">¿Acaso no lo sabían? ¿No se habían enterado? El Señor es el Dios eterno, Creador de los confines de la tierra. No se cansa ni se fatiga, y Su inteligencia es insondable.</p>
+        <p class="verse-ref">Isaías 40:28</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>Tripp nunca había citado un pasaje tan largo en ninguno de sus libros como lo hace con Isaías 40. Lo hace porque este capítulo no es solo literatura reconfortante: es literatura que provee una cosmovisión. Solo cuando veo todo a través del lente de la asombrosa gloria de Dios puedo entender algo correctamente.<br><br>Muchos creyentes dividen su vida en dos compartimentos: la "vida real" (trabajo, familia, dinero, salud) y la "vida espiritual" (iglesia, oración, teología). Pero Isaías 40 nos dice que solo hay un compartimento llamado vida. Todo va ahí, y Dios es el lente que le da sentido a todo. Cualquier otra perspectiva distorsiona la realidad como un vidrio de carnaval.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿Hay áreas de tu vida —el trabajo, las finanzas, la salud, las relaciones— donde operas con un "ateísmo práctico", como si Dios no estuviera presente o activo?</div>
+            <div class="question-item">Si Isaías 40 fuera el lente a través del cual ves tu situación más difícil ahora mismo, ¿qué cambiaría en tu perspectiva?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Señor, que Isaías 40 no sea solo un texto que leo; que sea la realidad que da forma a cómo veo mi vida. Que Tu gloria infinita sea el lente que interpreta todo lo demás. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-17">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(17)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 18 -->
+  <div class="day-card" id="day-18">
+    <div class="day-header" onclick="toggleDay(18)">
+      <div class="day-num" id="num-18">18</div>
+      <div class="day-meta">
+        <span class="day-tag">Cosmovisión</span>
+        <div class="day-title">Los síntomas de la vida compartimentada</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">Los que confían en el Señor renovarán sus fuerzas; volarán como las águilas: correrán y no se fatigarán, caminarán y no se cansarán.</p>
+        <p class="verse-ref">Isaías 40:31</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>La vida compartimentada —donde Dios está solo en la "sección espiritual" y ausente del resto— produce síntomas específicos: ansiedad (porque si Dios no gobierna, yo tengo que hacerlo), control excesivo, adicciones, depresión, deudas, temor al hombre, adicción al trabajo, insatisfacción crónica. Tripp los lista con precisión quirúrgica.<br><br>Tripp confiesa que durante el proceso de escribir este capítulo pasó uno de sus periodos más estresantes en el ministerio, pensando en renunciar, sintiéndose solo. Y fue al escribir este capítulo que se dio cuenta: no se había estado predicando Isaías 40 a sí mismo. Es posible enseñar verdades que uno mismo ha dejado de creer.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿Cuál de los síntomas de la vida compartimentada (ansiedad, control, adicción, depresión, deudas, temor al hombre, adicción al trabajo) reconoces más en tu propia vida?</div>
+            <div class="question-item">¿Hay una verdad sobre Dios que has estado enseñando o proclamando a otros pero que has dejado de aplicar a tu propio corazón?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Señor, que hoy salga del sótano oscuro hacia la luz de Tu presencia. No permitas que conozca Tu Palabra solo en mi mente sin que toque mi corazón. Predícame a mí mismo Tu gloria hoy. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-18">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(18)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 19 -->
+  <div class="day-card" id="day-19">
+    <div class="day-header" onclick="toggleDay(19)">
+      <div class="day-num" id="num-19">19</div>
+      <div class="day-meta">
+        <span class="day-tag">Iglesia</span>
+        <div class="day-title">La iglesia: más que un lugar al que asistir</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">Que habite en ustedes la palabra de Cristo con toda su riqueza: instrúyanse y aconséjense unos a otros con toda sabiduría.</p>
+        <p class="verse-ref">Colosenses 3:16</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>Mario y Lucía buscaron la iglesia perfecta durante años —la PIB demasiado tradicional, La Vid demasiado ambigua, la presbiteriana bien hasta que el consejero los decepcionó, Emanuel sin suficientes jóvenes. Ahora van a una megaiglesia dos veces al mes, entran y salen sin que nadie los note, y se consideran consumidores de servicios religiosos.<br><br>Colosenses 3 describe algo radicalmente diferente: una comunidad donde todos instruyen y aconsejan, donde la palabra de Cristo habita ricamente, donde el ministerio ocurre en los pasillos, las cocinas y las conversaciones. Esto solo sucede cuando las personas están asombradas por Dios ("las cosas de arriba"). El asombro por lo terrenal produce consumidores pasivos; el asombro por Dios produce comunidad ministerial.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿Eres principalmente un consumidor de tu iglesia local o un participante activo en el ministerio? ¿Qué dice eso sobre dónde está tu asombro?</div>
+            <div class="question-item">¿Hay alguien en tu iglesia con quien podrías ser más intencional en instruir, aconsejar o simplemente estar presente? ¿Qué te lo impide?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Señor, que el asombro por Ti llene mi corazón de tal manera que vea a mi iglesia no como un servicio que consumo, sino como un llamado que cumplo. Que mi vida sea un ministerio para los que me rodean. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-19">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(19)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 20 -->
+  <div class="day-card" id="day-20">
+    <div class="day-header" onclick="toggleDay(20)">
+      <div class="day-num" id="num-20">20</div>
+      <div class="day-meta">
+        <span class="day-tag">Iglesia</span>
+        <div class="day-title">La iglesia pierde la guerra del asombro</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">Si no deseas fervientemente que se manifieste la gloria de Dios, no es porque hayas bebido mucho y estés satisfecho. Es porque llevas demasiado tiempo comiendo migajas en la mesa del mundo.</p>
+        <p class="verse-ref">John Piper</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>Tripp dice algo que incomoda: las clases de evangelismo no producen evangelistas. El entrenamiento en consejería no produce consejeros. El problema de la iglesia no es falta de capacitación o estrategia. Es un problema de asombro. Si el corazón de las personas está puesto en "las cosas de la tierra", tendrán una relación pasiva con la iglesia y el ministerio. Pero si el asombro por Dios gobierna sus corazones, el ministerio llenará sus agendas naturalmente.<br><br>Existe una conexión directa entre el tipo de asombro que ha capturado tu corazón y la cantidad de ministerio que hay en tu vida. No es cuestión de disciplina o compromiso; es cuestión de asombro.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿Cuánto tiempo de tu agenda semanal está dedicado a servir a otros (fuera de tus compromisos profesionales)? ¿Qué dice eso sobre tu asombro?</div>
+            <div class="question-item">¿Sientes el ministerio como una carga o como una expresión natural de lo que desborda de tu corazón? ¿Por qué?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Señor, que el asombro por Tu gloria desborde de mi vida al punto que el ministerio no sea una obligación sino un gozo. Que ver a otros en necesidad despierte en mí el mismo amor que sientes Tú por ellos. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-20">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(20)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 21 -->
+  <div class="day-card" id="day-21">
+    <div class="day-header" onclick="toggleDay(21)">
+      <div class="day-num" id="num-21">21</div>
+      <div class="day-meta">
+        <span class="day-tag">Iglesia</span>
+        <div class="day-title">El llamado de Colosenses 3</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">Revístanse de afecto entrañable y de bondad, humildad, amabilidad y paciencia… Y todo lo que hagan, de palabra o de obra, háganlo en el nombre del Señor Jesús.</p>
+        <p class="verse-ref">Colosenses 3:12, 17</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>Colosenses 3:12-17 presenta cinco compromisos del creyente dentro de la comunidad: renunciar a la vida que niega a Dios, adoptar una nueva identidad en Cristo, estudiar la Palabra de Dios, buscar oportunidades para ministrar, y reconocer que su vida ya no le pertenece. El hilo que une todo es la frase: "Concentren su atención en las cosas de arriba, no en las de la tierra".<br><br>Tu vida ya no te pertenece. Dios es tu dueño, y Él es el dueño de cada una de tus relaciones. No tendrás una vida ministerial mientras no le entregues al Señor todo lo que eres y todo lo que tienes. El asombro genuino por Dios siempre produce rendición.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿Cuál de los cinco compromisos de Colosenses 3 es el área más débil en tu vida de fe actualmente?</div>
+            <div class="question-item">¿Hay algo que todavía guardas como "tuyo" que necesitas rendirle a Dios?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Señor, lo que tengo no me pertenece. Mi tiempo no me pertenece. Mis relaciones no me pertenecen. Con asombro por Tu gracia, te lo entrego todo hoy. Úsame. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-21">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(21)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SEMANA 4 ─── -->
+  <div class="section-label"><span>Semana 4 — Crianza, Trabajo y la Esperanza Eterna</span></div>
+
+  <!-- DÍA 22 -->
+  <div class="day-card" id="day-22">
+    <div class="day-header" onclick="toggleDay(22)">
+      <div class="day-num" id="num-22">22</div>
+      <div class="day-meta">
+        <span class="day-tag">Crianza</span>
+        <div class="day-title">El corazón del hijo es el campo de batalla</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">Así como un lunático no puede opacar al sol escribiendo la palabra "oscuridad" en las paredes de su celda, tampoco puede un hombre opacar la gloria de Dios por rehusarse a adorarle.</p>
+        <p class="verse-ref">C. S. Lewis</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>Todo niño llega al mundo creyendo dos mentiras: la mentira de la autonomía ("tengo derecho a vivir como quiera") y la mentira de la autosuficiencia ("no necesito ayuda"). Estas no son rabietas de comportamiento; son síntomas de un problema de asombro. El niño de cuatro años que dice "no" al papá cuatro veces más grande que él no está siendo irrazonable: está siendo pecador. Como todos nosotros.<br><br>La crianza reactiva —que solo controla el comportamiento externo— no toca ese problema. Francisco disciplinó fielmente a sus hijos, los mantuvo en orden durante años, y se quedó desconcertado cuando ambos abandonaron su fe al entrar a la universidad. Porque cuando el sistema de control desapareció, salió lo que realmente había en sus corazones. Solo el asombro por Dios puede reemplazar el asombro por uno mismo.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿Tu crianza es principalmente reactiva (respondiendo a comportamientos) o está guiada por una visión central de señalar a tus hijos la gloria de Dios?</div>
+            <div class="question-item">¿Hay momentos en que ejerces tu autoridad de manera que inspira a tus hijos a querer huir de la autoridad en general —incluyendo la de Dios?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Señor, ayúdame a ver el corazón de mis hijos, no solo su comportamiento. Que mi autoridad sobre ellos sea tan llena de gracia, paciencia y amor que los lleve a desear Tu autoridad sobre sus vidas. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-22">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(22)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 23 -->
+  <div class="day-card" id="day-23">
+    <div class="day-header" onclick="toggleDay(23)">
+      <div class="day-num" id="num-23">23</div>
+      <div class="day-meta">
+        <span class="day-tag">Crianza</span>
+        <div class="day-title">Ser instrumentos de visión para los hijos</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">Dios creó lo caliente y lo frío. Dios creó el agua que se congela y que también se evapora. Simplemente no puedes despertar por la mañana sin toparte con Dios.</p>
+        <p class="verse-ref">Paul David Tripp — Asombro, cap. 12</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>Dios ha diseñado el mundo de tal manera que revele Su gloria. Cada cosa creada señala hacia Él. El problema es que nuestros hijos tienen una habilidad perversa para mirar el mundo sin ver a Dios. El pecado los ciega. Y Dios nos puso estratégicamente en sus vidas para ser instrumentos de visión: señalar Su presencia, Su poder, Su gloria, una y otra vez.<br><br>Cuando vayas al zoológico, habla de cómo Dios hizo cada animal. Cuando horneen pan juntos, menciona los procesos que vienen de la mente de Dios. Cuando llueva, reconoce que nadie más controla el clima. No es antinatural hablar de Dios constantemente con tus hijos —lo antinatural es no hacerlo, en un mundo donde Dios está en todas partes.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿Cuándo fue la última vez que usaste un momento ordinario de la vida (comida, paseo, clima, enfermedad) para señalarle a tus hijos la gloria de Dios?</div>
+            <div class="question-item">¿Tienes tú mismo ojos para ver la gloria de Dios en lo cotidiano? Si no, ¿cómo puedes guiar a tus hijos hacia algo que no estás experimentando?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Señor, abre mis ojos para ver Tu gloria en lo ordinario, para que pueda abrirles los ojos a mis hijos también. Que en nuestra familia la conversación sobre Ti sea tan natural como respirar. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-23">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(23)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 24 -->
+  <div class="day-card" id="day-24">
+    <div class="day-header" onclick="toggleDay(24)">
+      <div class="day-num" id="num-24">24</div>
+      <div class="day-meta">
+        <span class="day-tag">Trabajo</span>
+        <div class="day-title">La adicción al trabajo es un problema de asombro</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">Tema toda la tierra al Señor; hónrenlo todos los pueblos del mundo.</p>
+        <p class="verse-ref">Salmo 33:8</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>Juan nunca está en casa. Roberto es agresivo por sus metas. Gabriela entró en depresión cuando perdió su trabajo. Bernardo gana mucho pero siempre está endeudado. Noel y Vivian trabajan 60 horas semanales y apenas ven a sus hijos. El denominador común no es el trabajo duro —es buscar en el trabajo lo que solo Dios puede dar: identidad, significado, propósito, valor.<br><br>Cuando el éxito se convierte en tu salvador personal, estarás perpetuamente insatisfecho porque el éxito actual siempre se devalúa y necesitas más. Cuando el poder es tu dios, dejarás un rastro de relaciones rotas. Cuando las posesiones definen tu identidad, siempre vivirás en deuda. El asombro por Dios es lo único que puede mantener el trabajo en su lugar adecuado.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿Le estás pidiendo a tu trabajo que te dé algo que no puede darte —identidad, propósito, seguridad? ¿Cómo se manifiesta eso?</div>
+            <div class="question-item">¿Hay alguna relación —con tu familia, tus amigos, tu iglesia— que ha sufrido porque tu vida laboral se ha expandido más de lo que debería?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Señor, ayúdame a no buscar en mi trabajo lo que solo Tú puedes darme. Que sea un buen mayordomo del tiempo y los dones que me has dado, usándolos para Tu gloria, no para construir mi propio reino. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-24">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(24)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 25 -->
+  <div class="day-card" id="day-25">
+    <div class="day-header" onclick="toggleDay(25)">
+      <div class="day-num" id="num-25">25</div>
+      <div class="day-meta">
+        <span class="day-tag">Trabajo</span>
+        <div class="day-title">Lo que el asombro enseña sobre el trabajo</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">Todo lo que hagan, háganlo de corazón, como para el Señor y no como para los hombres.</p>
+        <p class="verse-ref">Colosenses 3:23</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>El asombro por Dios transforma nuestra relación con el trabajo en seis formas concretas: (1) Tus dones provienen de Dios y le pertenecen a Él. (2) Tu tiempo le pertenece al Señor. (3) Eres llamado a vivir para algo más grande que tú. (4) El éxito no es poder personal sino descansar en el poder de Dios. (5) Dios nunca te llamaría a un trabajo que implique irresponsabilidad en otras áreas. (6) Por gracia, tu vida laboral puede ser una expresión de descanso y adoración, no de ansiedad.<br><br>Cuando el asombro por Dios gobierna tu vida laboral, el trabajo deja de ser el lugar donde construyes tu reino para convertirse en el lugar donde administras el suyo.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿Cuál de las seis enseñanzas sobre el trabajo más necesitas internalizar? ¿Por qué?</div>
+            <div class="question-item">¿Cómo sería diferente tu día laboral de mañana si lo comenzaras conscientemente como un acto de mayordomía para Dios?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Señor, que mi trabajo sea adoración mañana. Que cada tarea, cada reunión, cada esfuerzo sea hecho como para Ti. Que no construya mi propio reino con el tiempo que Tú me has dado. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-25">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(25)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 26 -->
+  <div class="day-card" id="day-26">
+    <div class="day-header" onclick="toggleDay(26)">
+      <div class="day-num" id="num-26">26</div>
+      <div class="day-meta">
+        <span class="day-tag">Epílogo</span>
+        <div class="day-title">El asombro es un anhelo</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">Si encuentro en mí un deseo que ninguna experiencia en este mundo puede satisfacer, la explicación más probable es que fui creado para otro mundo.</p>
+        <p class="verse-ref">C. S. Lewis</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>Tripp llega al final del libro con una revelación que lo completa todo: el asombro no es solo una capacidad; es un anhelo. Un anhelo profundo por un destino que este mundo no puede satisfacer. La incapacidad que sentimos de quedar permanentemente satisfechos con las cosas de esta vida no es un defecto —es una prueba de que fuimos creados para otro mundo.<br><br>Cada cosa asombrosa en la creación señala al Dios asombroso que las creó, y Su presencia es el único destino donde el hambre humana quedará finalmente saciada. El asombro que sientes ahora es un anticipo incompleto de lo que será contemplar la gloria de Dios cara a cara, para siempre. Por eso nunca puedes quedar completamente satisfecho aquí. Fuiste hecho para allá.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿Cómo cambia tu perspectiva de las frustraciones de esta vida cuando las ves a la luz del destino eterno para el que fuiste creado?</div>
+            <div class="question-item">¿Vives con un sentido genuino de esperanza en la eternidad, o la vida eterna es para ti una doctrina abstracta sin impacto en tu día a día?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Señor, gracias porque mi hambre de asombro no es un error —es una brújula que apunta hacia Ti y hacia la eternidad. Que ese anhelo me mantenga vivo espiritualmente mientras vivo en este mundo. Ven pronto, Señor Jesús. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-26">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(26)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 27 -->
+  <div class="day-card" id="day-27">
+    <div class="day-header" onclick="toggleDay(27)">
+      <div class="day-num" id="num-27">27</div>
+      <div class="day-meta">
+        <span class="day-tag">Integración</span>
+        <div class="day-title">La guerra que se libra en mí</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">Vivan por el Espíritu, y no seguirán los deseos de la naturaleza pecaminosa. Porque esta desea lo que es contrario al Espíritu, y el Espíritu desea lo que es contrario a ella.</p>
+        <p class="verse-ref">Gálatas 5:16-17</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>Tripp concluye el libro con una confesión sorprendente: todas las batallas del asombro que describió —el materialismo, el asombro propio, la queja, la adicción al trabajo, la vida compartimentada— se libran en su propio corazón también. No es inmune. Seguirá luchando.<br><br>Pero hay una diferencia entre antes y ahora: sabe que no está solo. El Espíritu Santo que habita en el creyente lucha contra la carne. Esta batalla es interna y debe ser ganada internamente. Y la única esperanza para que sea ganada no es más disciplina personal, sino más gracia. Participamos en la obra del Espíritu, pero no la producimos. Esa es la diferencia entre el evangelio y la religión.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">Después de 27 días con este devocional, ¿cuál es la batalla de asombro que Dios ha traído más claramente a tu conciencia?</div>
+            <div class="question-item">¿Cómo ha cambiado tu forma de ver esa batalla al entender que el Espíritu pelea por ti, incluso cuando no luchas por ti mismo?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Espíritu Santo, gracias por no rendirte conmigo. Gracias por pelear por mi asombro incluso en los días que no peleo yo. Sigo necesitando Tu gracia tanto como el primer día. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-27">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(27)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 28 -->
+  <div class="day-card" id="day-28">
+    <div class="day-header" onclick="toggleDay(28)">
+      <div class="day-num" id="num-28">28</div>
+      <div class="day-meta">
+        <span class="day-tag">Integración</span>
+        <div class="day-title">Vivir asombrado en lo ordinario</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">Nunca dejarás de ser la persona más asombrada por lo que Dios ha hecho en tu interior.</p>
+        <p class="verse-ref">Oswald Chambers</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>El asombro por Dios no vive en las cumbres emocionales de los campamentos o retiros espirituales. Debe habitar en lo ordinario: en el tráfico de la mañana, en la reunión de trabajo difícil, en la conversación tensa con un familiar, en el cansancio del fin de semana, en la rutina del hogar.<br><br>Tripp escribió este libro para sí mismo precisamente porque el asombro se diluye en lo ordinario. La práctica de recuperarlo no es solo de momentos de culto; es de una cosmovisión continua que ve a Dios en todas partes. El desafío no es tener más experiencias espirituales intensas; es ver cada experiencia ordinaria a través del lente de quién es Dios.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿Cuál es la parte más "ordinaria" de tu semana donde el asombro por Dios está más ausente? ¿Cómo podrías cambiar eso?</div>
+            <div class="question-item">¿Qué práctica concreta adoptarás para cultivar el asombro por Dios en tu vida diaria después de terminar este devocional?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Señor, que Tu presencia sea tan real para mí en lo ordinario como en los momentos de culto. Que no necesite circunstancias extraordinarias para asombrarme por Ti. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-28">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(28)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 29 -->
+  <div class="day-card" id="day-29">
+    <div class="day-header" onclick="toggleDay(29)">
+      <div class="day-num" id="num-29">29</div>
+      <div class="day-meta">
+        <span class="day-tag">Integración</span>
+        <div class="day-title">La gracia que es nuestra única esperanza</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">Las buenas noticias: la gracia perdonadora y rescatadora de Dios es infinitamente más poderosa que el asombro equivocado que secuestra el corazón de cada pecador.</p>
+        <p class="verse-ref">Paul David Tripp — Asombro, cap. 2</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>A lo largo de todo el libro, Tripp vuelve una y otra vez al mismo punto: no puedes librarte de ti mismo. No tienes el poder de vencer la guerra del asombro por tus propios medios. Pero el evangelio no es un programa de mejora personal; es la intervención de Dios en tu favor cuando eres completamente incapaz.<br><br>La gracia de Dios no solo te perdona el pasado; lucha por tu corazón en el presente. Es la gracia la que abre ojos ciegos. Es la gracia la que recaptura corazones errantes. Es la gracia la que transforma la motivación, no solo el comportamiento. No la mereces. No la ganaste. Ese es precisamente el punto. Y eso es precisamente lo que la hace tan asombrosa.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">¿Qué área de tu vida has intentado mejorar por fuerza de voluntad sin éxito duradero? ¿Has llevado esa área a la gracia de Dios honestamente?</div>
+            <div class="question-item">¿Cómo cambiaría tu vida si genuinamente creyeras que la gracia de Dios lucha por ti incluso cuando no luchas por ti mismo?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Señor, me asombra que Tu gracia sea tan grande. Que esa misma gracia que me salvó siga obrando en mí hoy. No quiero mejorar por esfuerzo propio; quiero ser transformado por Tu poder. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-29">
+        <span class="done-label">¿Completaste la lectura de hoy?</span>
+        <button class="btn-done" onclick="markDone(29)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DÍA 30 -->
+  <div class="day-card" id="day-30">
+    <div class="day-header" onclick="toggleDay(30)">
+      <div class="day-num" id="num-30">30</div>
+      <div class="day-meta">
+        <span class="day-tag">Cierre</span>
+        <div class="day-title">Asombrado para siempre</div>
+      </div>
+      <div class="day-chevron">▾</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        <p class="verse-text">El Espíritu y la novia dicen: "¡Ven!". El que tenga sed, venga; y el que quiera, tome gratuitamente del agua de la vida… Amén. ¡Ven, Señor Jesús!</p>
+        <p class="verse-ref">Apocalipsis 22:17, 20</p>
+      </div>
+      <div class="content-area">
+        <div class="section-block">
+          <h3>🌿 Reflexión</h3>
+          <p>El libro termina con una promesa: cuando llegue ese momento final, estaremos completamente satisfechos por la eternidad. Ya no seremos atormentados por los "y si…" y los "si tan solo…". Ya no envidiaremos lo que otros tienen. Ya no intentaremos calmar nuestra inquietud interna con cosas que nos traen problemas. Finalmente conoceremos lo que nunca hemos conocido plenamente.<br><br>El asombro es un anhelo por ese lugar. Jesús ha pagado por ese lugar y lo ha preparado para ti. Esa es la razón por la que el asombro de este mundo siempre se queda corto: porque fuiste creado para un asombro eterno que comenzará cuando veas a Dios cara a cara. Hasta entonces, cada momento de asombro genuino por Dios es un anticipo de lo que está por venir.</p>
+        </div>
+        <div class="questions-block">
+          <h3>💬 Para reflexionar</h3>
+          <div class="question-list">
+            <div class="question-item">Al terminar estos 30 días, ¿qué verdad del libro de Tripp ha cambiado más significativamente tu forma de ver a Dios, a ti mismo o a tu vida?</div>
+            <div class="question-item">¿Qué promesa de Dios quieres llevar contigo hacia los próximos 30 días, los próximos 30 años?</div>
+          </div>
+        </div>
+        <div class="prayer-block">
+          <h3>🙏 Oración</h3>
+          <p>Señor, gracias por estos 30 días. Gracias por el libro que escribiste en el corazón de Paul Tripp y que habló al mío. Que el asombro por Ti sea el combustible de mi vida. Que cada día sea un anticipo de la eternidad donde finalmente estaré asombrado para siempre. Ven pronto, Señor Jesús. Amén.</p>
+        </div>
+      </div>
+      <div class="done-row" id="done-row-30">
+        <span class="done-label">¡Has llegado al día 30! ¿Lo completaste?</span>
+        <button class="btn-done" onclick="markDone(30)">Marcar como leído ✓</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<div class="footer">
+  <em>"El asombro es un anhelo por otro mundo."</em><br>
+  — Paul David Tripp, <em>Asombro</em>
+</div>
+
+<script>
+  const TOTAL = 30;
+  const STORAGE_KEY = 'asombro_devocional_v1';
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch { return {}; }
+  }
+
+  function saveState(state) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch {}
+  }
+
+  let state = loadState();
+
+  function updateProgress() {
+    const done = Object.values(state).filter(Boolean).length;
+    const pct = Math.round((done / TOTAL) * 100);
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' de ' + TOTAL;
+  }
+
+  function applyState() {
+    for (let i = 1; i <= TOTAL; i++) {
+      const card = document.getElementById('day-' + i);
+      const num  = document.getElementById('num-' + i);
+      const row  = document.getElementById('done-row-' + i);
+      if (!card) continue;
+
+      if (state[i]) {
+        card.classList.add('completed');
+        num.textContent = '✓';
+        row.innerHTML = `
+          <div class="completed-badge"><span>✓</span> Completado</div>
+          <button class="btn-undo" onclick="undoDone(${i})">Desmarcar</button>`;
+      } else {
+        card.classList.remove('completed');
+        num.textContent = i;
+        row.innerHTML = `
+          <span class="done-label">${i === 30 ? '¡Has llegado al día 30! ¿Lo completaste?' : '¿Completaste la lectura de hoy?'}</span>
+          <button class="btn-done" onclick="markDone(${i})">Marcar como leído ✓</button>`;
+      }
+    }
+    updateProgress();
+  }
+
+  function toggleDay(n) {
+    const card = document.getElementById('day-' + n);
+    card.classList.toggle('open');
+  }
+
+  function markDone(n) {
+    state[n] = true;
+    saveState(state);
+    const card = document.getElementById('day-' + n);
+    card.classList.add('completed');
+    applyState();
+    // auto-close after a short moment
+    setTimeout(() => card.classList.remove('open'), 400);
+  }
+
+  function undoDone(n) {
+    delete state[n];
+    saveState(state);
+    applyState();
+  }
+
+  // Init
+  applyState();
+</script>
+</body>
+</html>

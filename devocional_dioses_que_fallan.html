@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Devocional 30 Días – Dioses que Fallan</title>
+<style>
+  :root {
+    --cream: #fdf6ee;
+    --gold: #b5872a;
+    --gold-light: #e8c97a;
+    --brown: #5c3d1e;
+    --text: #2c1a0e;
+    --gray: #8a7a6a;
+    --done-bg: #e8f4e8;
+    --done-border: #5a9a5a;
+    --card-shadow: 0 4px 18px rgba(92,61,30,0.13);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  header {
+    background: linear-gradient(135deg, var(--brown) 0%, #8b5a2b 100%);
+    color: #fff;
+    text-align: center;
+    padding: 40px 20px 32px;
+    border-bottom: 4px solid var(--gold);
+  }
+
+  header h1 {
+    font-size: 2.1rem;
+    letter-spacing: .04em;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 6px rgba(0,0,0,.3);
+  }
+
+  header p {
+    font-size: 1rem;
+    opacity: .85;
+    font-style: italic;
+  }
+
+  .progress-bar-wrap {
+    background: rgba(255,255,255,.2);
+    border-radius: 20px;
+    height: 10px;
+    width: 60%;
+    margin: 18px auto 0;
+    overflow: hidden;
+  }
+
+  #progress-bar {
+    height: 100%;
+    background: var(--gold-light);
+    border-radius: 20px;
+    transition: width .5s ease;
+    width: 0%;
+  }
+
+  #progress-label {
+    color: var(--gold-light);
+    font-size: .85rem;
+    margin-top: 6px;
+    text-align: center;
+  }
+
+  .nav-tabs {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 20px 16px 8px;
+    background: #f5ede0;
+    border-bottom: 1px solid #e0cdb5;
+  }
+
+  .tab-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    background: #fff;
+    color: var(--brown);
+    font-size: .9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all .2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .tab-btn:hover {
+    background: var(--gold-light);
+    transform: scale(1.08);
+  }
+
+  .tab-btn.active {
+    background: var(--brown);
+    color: #fff;
+    border-color: var(--brown);
+    box-shadow: 0 2px 8px rgba(92,61,30,.4);
+  }
+
+  .tab-btn.done {
+    background: var(--done-bg);
+    border-color: var(--done-border);
+    color: var(--done-border);
+  }
+
+  .tab-btn.done::after {
+    content: '✓';
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: var(--done-border);
+    color: #fff;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    font-size: .6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+
+  .main-content {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+  }
+
+  .day-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    display: none;
+  }
+
+  .day-card.active { display: block; }
+
+  .day-header {
+    background: linear-gradient(135deg, var(--brown) 0%, #7a4f20 100%);
+    padding: 24px 28px;
+    color: #fff;
+  }
+
+  .day-label {
+    font-size: .8rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    opacity: .75;
+    margin-bottom: 4px;
+  }
+
+  .day-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+
+  .day-subtitle {
+    font-size: .95rem;
+    opacity: .85;
+    font-style: italic;
+  }
+
+  .day-body {
+    padding: 28px 28px 20px;
+  }
+
+  .verse-box {
+    background: linear-gradient(135deg, #fdf0d5 0%, #fef8ec 100%);
+    border-left: 5px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--brown);
+    line-height: 1.7;
+  }
+
+  .verse-ref {
+    display: block;
+    margin-top: 8px;
+    font-weight: bold;
+    font-style: normal;
+    font-size: .88rem;
+    color: var(--gold);
+  }
+
+  .day-content p {
+    font-size: 1.02rem;
+    line-height: 1.82;
+    color: var(--text);
+    margin-bottom: 18px;
+    text-align: justify;
+  }
+
+  .reflection-box {
+    background: #f7f0e8;
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-top: 24px;
+    border-top: 3px solid var(--gold-light);
+  }
+
+  .reflection-box h3 {
+    font-size: .9rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 10px;
+  }
+
+  .reflection-box p {
+    font-size: .97rem;
+    line-height: 1.7;
+    color: var(--brown);
+    font-style: italic;
+  }
+
+  .prayer-box {
+    background: #eef4ee;
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-top: 16px;
+    border-left: 4px solid var(--done-border);
+  }
+
+  .prayer-box h3 {
+    font-size: .9rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #4a7a4a;
+    margin-bottom: 10px;
+  }
+
+  .prayer-box p {
+    font-size: .97rem;
+    line-height: 1.7;
+    color: #2e5c2e;
+    font-style: italic;
+  }
+
+  .done-btn-wrap {
+    padding: 24px 28px;
+    border-top: 1px solid #f0e8d8;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-done {
+    background: var(--brown);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 26px;
+    font-size: 1rem;
+    font-family: inherit;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all .2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-done:hover { background: #3e2610; transform: translateY(-1px); }
+
+  .btn-done.completed {
+    background: var(--done-border);
+  }
+
+  .btn-next {
+    background: transparent;
+    border: 2px solid var(--gold);
+    color: var(--brown);
+    border-radius: 8px;
+    padding: 11px 22px;
+    font-size: .95rem;
+    font-family: inherit;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all .2s;
+  }
+
+  .btn-next:hover { background: var(--gold-light); }
+
+  .completed-badge {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    color: var(--done-border);
+    font-weight: bold;
+    font-size: .95rem;
+  }
+
+  .completed-badge.show { display: flex; }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.45rem; }
+    .day-title { font-size: 1.2rem; }
+    .day-body { padding: 20px 18px 14px; }
+    .done-btn-wrap { padding: 18px; }
+    .progress-bar-wrap { width: 85%; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📖 Dioses que Fallan</h1>
+  <p>Devocional de 30 Días — Timothy Keller</p>
+  <div class="progress-bar-wrap"><div id="progress-bar"></div></div>
+  <div id="progress-label">0 de 30 días completados</div>
+</header>
+
+<div class="nav-tabs" id="nav-tabs"></div>
+
+<div class="main-content">
+  <div id="cards-container"></div>
+</div>
+
+<script>
+const days = [
+  {
+    title: "La Fábrica de Ídolos",
+    subtitle: "Introducción: el corazón humano y su tendencia natural",
+    verse: "\"Estos hombres han puesto sus ídolos en su corazón.\" — Ezequiel 14:3",
+    content: [
+      "Después de que empezase la crisis económica mundial a mediados de 2008, se produjo una trágica serie de suicidios de personas que anteriormente habían sido adineradas. El director financiero de Freddie Mac se ahorcó en su sótano; otro ejecutivo se pegó un tiro sentado en su Jaguar rojo. Un amigo de uno de ellos dijo con tristeza: \"Este asunto quebrantó su espíritu\". Las circunstancias recordaban desagradablemente a los suicidios que se produjeron tras el hundimiento del mercado de valores en 1929.",
+      "Ya en la década de 1830, Alexis de Tocqueville observó en América \"una extraña melancolía que invade a sus habitantes... aun en medio de la abundancia\". Los estadounidenses creían que la prosperidad saciaría su sed de felicidad, pero dicha esperanza era ilusoria, porque los gozos incompletos de este mundo nunca satisfacen el corazón humano. Esta extraña melancolía se manifiesta de muchas formas, pero siempre conduce a la misma desesperación nacida de no encontrar lo que se busca.",
+      "Existe una diferencia entre la tristeza y la desesperación. La tristeza es un dolor para el que existen maneras de aliviarlo. Sin embargo, la desesperación es inconsolable, porque nace de perder algo esencial. Cuando usted pierde la fuente esencial del sentido de su vida o de su esperanza, ya no hay otras fuentes a las que recurrir. Esto quebranta nuestro espíritu. De Tocqueville dice que esta melancolía es el resultado de escoger \"un goce incompleto de este mundo\" y convertirlo en el eje de la existencia. Esta es, precisamente, la definición de la idolatría.",
+      "La Biblia afirma que el corazón humano es una \"fábrica de ídolos\". Lo que Dios decía al señalar los ídolos en el corazón de los líderes de Israel es que el corazón humano toma cosas buenas —una carrera de éxito, el amor, los bienes materiales, incluso la familia— y las convierte en esenciales. Nuestros corazones las deifican como el centro de nuestras vidas, porque pensamos que, si las alcanzamos, pueden ofrecernos trascendencia y seguridad, tranquilidad y plenitud. El problema no está en las cosas mismas, sino en el lugar que les damos en nuestro corazón."
+    ],
+    reflection: "¿Hay algo en tu vida —trabajo, relación, imagen, dinero— que, si lo perdieras, sientes que tu vida perdería todo sentido? Ese es un indicador de un posible ídolo.",
+    prayer: "Señor, examina mi corazón hoy. Muéstrame las cosas buenas que he elevado al lugar que solo Tú mereces. Dame sabiduría para reconocer mis ídolos y valentía para enfrentarlos. Amén."
+  },
+  {
+    title: "Dioses para Cada Época",
+    subtitle: "Los ídolos cambian de forma pero no de naturaleza",
+    verse: "\"No tendrás dioses ajenos delante de mí.\" — Éxodo 20:3",
+    content: [
+      "Cuando la mayoría de personas piensa en los ídolos, tiene en mente estatuas físicas o quizás la estrella del pop del momento. Sin embargo, la adoración tradicional a los ídolos sigue teniendo lugar en muchos lugares del mundo, y la pleitesía interior, la que se rinde dentro del corazón, es universal. Dios dice que los líderes de Israel pusieron sus ídolos en su corazón. Y la respuesta más natural habría sido: \"¿Ídolos? ¿Qué ídolos? ¡Yo no veo ningún ídolo!\".",
+      "Nuestra sociedad contemporánea, en su esencia, no es distinta de las antiguas. Cada cultura está dominada por su propio conjunto de ídolos. Cada una tiene sus \"sacerdocios\", sus tótems y sus rituales. Cada una tiene sus santuarios —complejos de oficinas, spas y gimnasios, estudios o estadios— donde hay que presentar sacrificios para obtener las bendiciones de la buena vida. ¿Qué son los dioses de la belleza, el poder, el dinero y el éxito sino aquellas mismas cosas que han asumido unas proporciones míticas en nuestras vidas individuales y en nuestras sociedades?",
+      "Es posible que no nos arrodillemos físicamente ante la estatua de Afrodita, pero hoy día son muchas las jóvenes que caen en depresiones y en trastornos alimentarios porque sienten una preocupación desmedida por su imagen física. Seguramente no encendemos incienso para Artemisa, pero cuando el dinero y la carrera profesional alcanzan dimensiones cósmicas, realizamos una especie de sacrificio de niños, olvidando a la familia y a la comunidad para alcanzar un estrato empresarial superior y obtener más dinero y prestigio.",
+      "El concepto bíblico de la idolatría es una idea extremadamente sofisticada que integra categorías intelectuales, psicológicas, sociales, culturales y espirituales. Todo puede convertirse en un dios falso, en especial las mejores cosas de esta vida. ¿Es malo querer tropas disciplinadas, seguridad económica o un buen rendimiento atlético? En absoluto. Pero cuando algo legítimo y positivo se convierte en algo supremo, sus exigencias pueden más que cualquier otro valor alternativo. Los dioses falsos siempre decepcionan y, a menudo, destructivamente."
+    ],
+    reflection: "¿En qué áreas de tu vida has comenzado a hacer \"sacrificios\" que no harías si ese asunto no tuviera un lugar desproporcionado en tu corazón?",
+    prayer: "Padre, ayúdame a ver con claridad los ídolos de mi cultura y de mi tiempo. Que no me deje llevar por la corriente de lo que el mundo llama éxito. Solo Tú mereces el primer lugar en mi vida. Amén."
+  },
+  {
+    title: "Los Ídolos del Corazón",
+    subtitle: "Cómo reconocer lo que realmente gobierna nuestra vida",
+    verse: "\"El que no escatimó ni a su propio Hijo, sino que lo entregó por todos nosotros, ¿cómo no nos dará también con él todas las cosas?\" — Romanos 8:32",
+    content: [
+      "¿Qué es un ídolo? Es algo que es más importante para usted que Dios, cualquier cosa que cautive su corazón y su imaginación más que Dios, cualquier cosa que espere que le proporcione lo que solamente Dios puede darle. Un dios falso es algo tan crucial y esencial para su vida que, si lo perdiese, esta carecería de sentido. Un ídolo ocupa una posición de control tan fuerte en su corazón que usted invierte en él la mayor parte de su pasión y su energía, sus recursos emocionales y económicos, sin pensárselo dos veces.",
+      "Puede ser la familia y los hijos, la carrera profesional y ganar dinero, los éxitos y el aplauso de los demás, o guardar las apariencias y conservar la posición social. Puede tratarse de una relación sentimental, la aprobación de nuestros iguales, la competencia y la capacidad, unas circunstancias seguras y cómodas, su belleza o su intelecto, una gran causa política o social, su moral y su virtud o incluso el éxito en el ministerio cristiano. Un ídolo es cualquier cosa en la que usted fija su vista y dice en lo más íntimo de su corazón: \"Si consigo eso, mi vida tendrá sentido\".",
+      "Los paganos de la antigüedad no fueron muy fantasiosos cuando concibieron que prácticamente cualquier cosa era un dios. Tenían divinidades del sexo, del trabajo, de la guerra, del dinero, dioses nacionales; y esto por la simple razón de que cualquier cosa puede convertirse en un dios que gobierne el corazón de un individuo o en la vida de todo un pueblo. Si cualquier cosa se vuelve más fundamental que Dios para su felicidad, el sentido de su vida y su identidad, entonces es un ídolo. La belleza física puede ser agradable, pero si se la \"deifica\", el resultado no es simplemente la belleza, sino una forma de adoración que distorsiona todo lo demás.",
+      "La Biblia usa tres metáforas básicas para describir cómo se relacionan las personas con los ídolos de sus corazones: los aman, confían en ellos y los obedecen. En ocasiones se habla de los ídolos usando una metáfora matrimonial: Dios debería ser nuestro verdadero esposo, pero cuando deseamos otras cosas y nos deleitamos en ellas más que en Dios, cometemos un adulterio espiritual. Lo que muchas personas tildan de \"problemas psicológicos\" no son más que sencillas cuestiones de idolatría. El perfeccionismo, la adicción al trabajo, la indecisión crónica, la necesidad de controlar las vidas de otros... son cosas que se dan cuando convertimos algo bueno en ídolos que entonces nos hacen caer de rodillas para complacerlos."
+    ],
+    reflection: "¿Cuáles son tus ensoñaciones cotidianas? ¿Qué imaginas que te daría plena felicidad? ¿Qué es lo que más temes perder? Las respuestas revelan tus ídolos.",
+    prayer: "Señor Jesús, quiero amarte a Ti por sobre todas las cosas. Muéstrame dónde estoy buscando en criaturas lo que solo el Creador puede dar. Libérame de los ídolos que me esclavizan. Amén."
+  },
+  {
+    title: "La Oportunidad del Desencanto",
+    subtitle: "Cuando los ídolos caen, se abre la puerta a algo mejor",
+    verse: "\"El camino hacia delante consiste en discernir los ídolos de nuestro corazón y de nuestra cultura.\" — Timothy Keller",
+    content: [
+      "Existe una enorme diferencia entre la tristeza y la desesperación, dado que esta última es una tristeza insoportable. En la mayoría de los casos, la diferencia entre ambas es la idolatría. En mitad de la gran crisis económica de 2008, se supo que un hombre llamado Bill, que tres años antes se había convertido al cristianismo, declaró: \"Si esta debacle económica se hubiera producido hace más de tres años... la verdad es que no sé cómo la hubiera superado. Le puedo decir sinceramente que nunca en mi vida había sido tan feliz como ahora\".",
+      "Aunque pensamos que vivimos en un mundo secular, los ídolos, los relucientes dioses de nuestra época, ostentan sus derechos a la confianza funcional de nuestros corazones. Cuando la economía mundial está en ruinas, muchos de los ídolos a los que llevamos años adorando se vienen abajo a nuestro alrededor. Esa puede ser nuestra gran oportunidad. Estamos experimentando un periodo breve de \"desencanto\". En los relatos de antaño, este era el momento en que se rompía el conjuro lanzado por el malvado hechicero y el protagonista tenía ocasión de escapar.",
+      "El camino hacia adelante, el que nos saca de la desesperación, consiste en discernir los ídolos de nuestro corazón y de nuestra cultura. Pero eso no bastará. La única manera de librarnos de la influencia destructiva de los dioses falsos es volvernos al único verdadero. El Dios vivo, que se reveló tanto en el monte Sinaí como en la cruz, es el único Señor que, si le encuentra, puede llenarle de verdad y, si usted le falla, puede perdonarle genuinamente.",
+      "Los ídolos a los que llevamos tantos años adorando pueden venirse abajo ante nuestros ojos. No se trata solo de crisis económicas o personales; puede ser también la pérdida de una relación, un diagnóstico médico, el fracaso de un proyecto al que dedicamos todo. En cada una de esas circunstancias, el desencanto puede convertirse en el umbral de una fe más profunda y auténtica. La pregunta no es si los ídolos caerán —inevitablemente lo harán— sino qué haremos cuando eso ocurra: ¿caer con ellos en la desesperación, o volvernos al Dios que no puede caer?"
+    ],
+    reflection: "¿Has vivido el derrumbe de algo en lo que pusiste toda tu esperanza? ¿Cómo respondiste? ¿Ese momento de desencanto te acercó o te alejó de Dios?",
+    prayer: "Señor, gracias porque cuando mis ídolos caen, Tú sigues en pie. En mis momentos de desencanto, que no me aferre a lo que se está desmoronando, sino a Ti, que eres roca firme. Amén."
+  },
+  {
+    title: "Abraham y el Primer Llamado",
+    subtitle: "Dejar atrás la seguridad para encontrar la verdadera",
+    verse: "\"Vete de tu tierra y de tu parentela, y de la casa de tu padre, a la tierra que yo te mostraré.\" — Génesis 12:1",
+    content: [
+      "Según la Biblia, Dios acudió a Abraham y le hizo una promesa impresionante. Si Abraham le obedecía fielmente, Dios bendeciría a todas las naciones de la Tierra por medio de él y de sus descendientes. No obstante, para que esto sucediera, Abraham tenía que irse. Dios llamó a Abraham a que dejase atrás todo lo que conocía —sus amigos, buena parte de su familia, y todo lo que según él le ofrecía seguridad, prosperidad y paz— y se marchara a lo desconocido, sin tener idea de su destino. Dios le pidió que, por amor a Él, abandonase casi todas las esperanzas y las cosas mundanales que desea el corazón de un ser humano.",
+      "Y Abraham lo hizo. Fue llamado a \"marcharse\" y se fue, \"sin saber a dónde iba\" (Hebreos 11:8). Sin embargo, mientras que el llamado de Dios le exigió que abandonara todas sus otras esperanzas, también le dio una nueva. La profecía decía que las naciones de la Tierra serían benditas por medio de su familia. Eso suponía que tendría hijos, aunque Sara, su esposa, no había podido concebirlos hasta entonces. Hablando en términos biológicos, tener hijos parecía una meta imposible. Pero Dios prometió que Abraham tendría un hijo.",
+      "Sin embargo, a medida que pasaban los años la promesa divina cada vez costaba más de creer. Por fin, cuando Abraham tuvo más de cien años, y Sara más de noventa, ella dio a luz a un hijo: Isaac. Era evidente que se trató de una intervención divina. El nombre de Isaac significa \"risa\", una referencia tanto a la alegría de sus padres como a su dificultad para creer que Dios les daría aquello que les había prometido. Los años de espera atribulada habían pasado factura, como puede atestiguar cualquier pareja que tenga problemas de infertilidad.",
+      "Las demoras casi inacabables refinaron la fe de Abraham, un proceso tremendamente importante. No obstante, los años de infertilidad también tuvieron otro efecto. Nadie había deseado un hijo más que Abraham. Había renunciado a todo lo demás para esperar su llegada. Cuando por fin nació Isaac, el corazón de Abraham encontró lo que había buscado toda la vida. ¿Pero era eso bueno? ¿Había estado esperando y sacrificándose por Dios, o por el muchacho? ¿Dios era algo más que un medio para alcanzar un fin? Esta sería pronto la pregunta definitiva."
+    ],
+    reflection: "¿Hay algo que Dios te ha pedido que \"dejes atrás\" para seguirle más de cerca? ¿Estás disponible para ir sin saber a dónde, confiando solo en Su palabra?",
+    prayer: "Padre, dame la fe de Abraham para ir donde Tú me llames, aunque no entienda el camino. Que mi confianza no esté puesta en lo que puedo ver, sino en Tu promesa. Amén."
+  },
+  {
+    title: "Isaac sobre el Altar",
+    subtitle: "Cuando Dios toca lo que más amamos",
+    verse: "\"Toma ahora tu hijo, tu único, Isaac, a quien amas... y ofrécelo allí en holocausto.\" — Génesis 22:2",
+    content: [
+      "Los lectores de la historia de Abraham podrían pensar que el nacimiento de Isaac sería el punto culminante y el último capítulo de su vida. Su fe había triunfado. Ahora, podía morir feliz, habiendo cumplido el llamado de Dios. Pero entonces, para sorpresa nuestra, Abraham recibió otro llamado de Dios. Y no podía haber sido nada más demoledor: que tomara a su hijo, su único, Isaac, a quien amaba, y lo ofreciese en holocausto. Aquella fue la prueba definitiva.",
+      "El afecto de Abraham se había convertido en adoración. Anteriormente, el sentido de la vida de Abraham había dependido de la palabra de Dios. Ahora, iba dependiendo cada vez más del amor y el bienestar de Isaac. El centro de la vida de Abraham se estaba desplazando. Dios no decía que no se pueda amar a los hijos, sino que no debemos convertir a un ser querido en un dios falso. Si alguien coloca a un hijo o hija en el lugar del Dios verdadero, crea un amor idólatra que asfixiará a los hijos y destruirá la relación con ellos.",
+      "¿Cómo se obligó Abraham a subir a las montañas obedeciendo al llamado de Dios? Abraham no subió al monte diciendo \"puedo hacerlo\", lleno de fuerza de voluntad y confiado en sí mismo. Más bien, ascendió diciendo: \"Dios lo hará... pero no sé cómo\". No se limitaba a ejercer una \"fe ciega\". No estaba diciendo: \"Esto es una locura, pero a pesar de todo lo haré\". En lugar de eso, decía: \"Sé que Dios es tan santo como misericordioso. No sé cómo podrá ser ambas cosas, pero sé que lo hará\".",
+      "Abraham construyó el altar, colocó la leña, ató a Isaac y extendió su mano con el cuchillo. En aquel mismo instante, la voz de Dios descendió desde el cielo. Dios detuvo a Abraham y le dijo: \"Ahora sé que temes a Dios, por cuanto no me rehusaste tu hijo, tu único\". En la Biblia, \"el temor de Dios\" describe un asombro amante y alegre frente a la grandeza de Dios. El Señor decía: \"Ahora sé que me amas más que a cualquier otra cosa en este mundo\". Y se proveyó un sustituto: un carnero en lugar de Isaac."
+    ],
+    reflection: "¿Hay un \"Isaac\" en tu vida —algo bueno que Dios te ha dado pero que has comenzado a amar más que a Él mismo? ¿Qué significaría \"poner ese Isaac en el altar\"?",
+    prayer: "Señor, lo que has puesto en mis manos Te lo devuelvo hoy. Que nada que hayas creado tome el lugar del Creador en mi corazón. Ayúdame a sostener todo con manos abiertas. Amén."
+  },
+  {
+    title: "Amar Correctamente",
+    subtitle: "Solo cuando Dios ocupa el primer lugar podemos amar bien lo demás",
+    verse: "\"Si me tengo a Dios, poseo la única riqueza, salud, amor, honor y seguridad que realmente necesito.\" — Timothy Keller",
+    content: [
+      "¿Cuál es la enseñanza del episodio de Abraham e Isaac? Abraham entendió muy bien que aquella prueba tenía que ver con el amor supremo a Dios. Esto no significa que Dios intentase averiguar si Abraham le amaba —el Dios omnisciente conoce todos los estados del corazón—. Más bien, Dios hacía pasar a Abraham por el horno de la prueba, de modo que su amor por Dios pudiera manifestarse al final \"como el oro fino\". No es difícil entender por qué Dios usó a Isaac como medio para alcanzar ese fin. Si Dios no hubiera intervenido, sin duda Abraham habría acabado amando a su hijo más que a cualquier otra cosa en la vida. Eso hubiera constituido idolatría.",
+      "Desde este punto de vista, vemos que el trato extremadamente crudo que Dios dispensó a Abraham fue en realidad misericordioso. Isaac supuso un don maravilloso para Abraham, pero entrañó un peligro para su padre hasta que este estuvo dispuesto a poner a Dios en primer lugar. De manera similar, quizá no nos apercibamos de lo idolátrico que se ha vuelto nuestro trabajo profesional hasta que nos encontremos en una circunstancia en la que decir la verdad o actuar con integridad supondría un golpe contundente a nuestras posibilidades de ascender. Si no estamos dispuestos a perjudicar nuestra carrera para hacer la voluntad de Dios, nuestro trabajo se habrá convertido en un dios fraudulento.",
+      "Si Isaac se hubiera convertido en la principal esperanza y alegría de la vida de Abraham, su padre le habría disciplinado demasiado —porque necesitaría que su hijo fuera \"perfecto\"—, o demasiado poco —porque no soportaría la contrariedad de su hijo—, o ambas cosas. Le habría consentido mucho, pero al mismo tiempo se habría mostrado furioso y cruel cuando su hijo le decepcionara. ¿Por qué? Porque los ídolos esclavizan. Ningún hijo puede llevar la carga total de las expectativas de un padre. Las expectativas idolátricas de Abraham habrían alejado de él a Isaac o desfigurado su espíritu.",
+      "Por consiguiente, el trayecto espantoso de Abraham al monte fue la última etapa de un largo viaje en el que Dios le transformaba de hombre corriente a uno de los personajes más destacados de la historia. Las tres grandes religiones monoteístas modernas —Judaísmo, Islam y Cristianismo— nombran a Abraham como su fundador. Más de la mitad de los seres humanos le consideran su padre espiritual. Eso no habría sucedido si Dios no hubiese destruido el ídolo que Abraham llevaba en su corazón. La prueba fue el camino hacia la grandeza."
+    ],
+    reflection: "¿Cómo afecta a tus relaciones más cercanas el hecho de que Dios no sea el primero en tu corazón? ¿Qué cambiaría si lo pusiera a Él primero?",
+    prayer: "Dios, ayúdame a amarte a Ti por encima de todo, para poder amar a los demás de manera sana, libre y genuina. Que mis relaciones reflejen Tu amor, no mis necesidades sin satisfacer. Amén."
+  },
+  {
+    title: "El Sustituto",
+    subtitle: "Jesús, el Hijo entregado en nuestro lugar",
+    verse: "\"El que no escatimó ni a su propio Hijo, sino que lo entregó por todos nosotros.\" — Romanos 8:32",
+    content: [
+      "La historia de Abraham e Isaac apuntaba a algo que Abraham no podía ver del todo en su época. Isaac fue salvado del altar. Los pecados de Abraham y de su familia seguían allí. ¿Cómo podía pasarlos por alto un Dios santo y justo? Pues bien, se ofreció un sustituto, un carnero. Pero la sangre del carnero no fue la que canceló definitivamente la deuda. Aquello apuntaba hacia adelante, hacia algo mucho mayor.",
+      "Muchos años después, en aquellas mismas montañas, otro Primogénito fue sujeto a un madero para morir. Pero allí, en el monte Calvario, cuando el Hijo amado de Dios exclamó \"¡Dios mío, Dios mío! ¿Por qué me has abandonado?\", no hubo ninguna voz del cielo que anunciara liberación. En lugar de eso, Dios Padre pagó el precio en silencio. ¿Por qué? El verdadero sustituto del hijo de Abraham fue el unigénito de Dios, Jesús, que murió en pago por nuestros pecados.",
+      "Pablo comprendió el verdadero sentido de la historia de Isaac cuando aplicó deliberadamente a Jesús el lenguaje propio de aquel episodio: \"El que no escatimó ni a su propio Hijo, sino que lo entregó por todos nosotros, ¿cómo no nos dará también con él todas las cosas?\" (Romanos 8:32). Aquí encontramos la respuesta práctica a nuestras idolatrías, a los \"Isaacs\" de nuestras vidas. Debemos encontrar la manera de evitar que se nos aferren con demasiada fuerza. Nunca lo haremos mientras pronunciemos palabras abstractas sobre lo grande que es Dios.",
+      "Debemos estar seguros de que Dios nos ama, nos valora tanto y se complace hasta tal punto en nosotros que podemos descansar en Él nuestros corazones para hallar nuestro valor y nuestra seguridad. Jesús es el único que hace que esta historia tenga sentido. Solo si Jesús vivió y murió por nosotros podemos tener de inmediato un Dios de amor y santidad infinitos. Cuando nuestras mentes entienden la magnitud de lo que Él hizo, al final podemos descansar nuestros corazones en Dios y no en cualquier otra cosa. La contemplación de la cruz es el antídoto más poderoso contra la idolatría."
+    ],
+    reflection: "Medita hoy en el sacrificio de Cristo. ¿Realmente crees que su amor y aprobación son suficientes para ti? ¿Qué cambiaría en tu vida si lo creyeras profundamente?",
+    prayer: "Señor Jesús, gracias porque Tú eres el Cordero que fue dado en mi lugar. Que la contemplación de Tu amor en la cruz me libere de buscar en otras cosas lo que solo Tú puedes dar. Amén."
+  },
+  {
+    title: "Tu Camino al Monte",
+    subtitle: "Cómo responder cuando Dios toca nuestros ídolos",
+    verse: "\"Hasta que lo único que tengas sea Jesús, no te darás cuenta de que Él es todo lo que necesitas.\" — Timothy Keller",
+    content: [
+      "Piense en las muchas decepciones y problemas que nos acosan. Écheles un vistazo más de cerca y se dará cuenta de que los más poderosos de ellos tienen que ver con nuestros propios \"Isaacs\". En nuestras vidas, siempre hay cosas en las que invertimos para obtener cierto grado de alegría y de plenitud que sólo puede darnos Dios. Los momentos más dolorosos de nuestras vidas son aquellos en los que nuestros Isaacs, nuestros ídolos, corren peligro o alguien nos los quita.",
+      "Cuando esto sucede, podemos reaccionar de dos maneras. Podemos decantarnos por la amargura y el desespero, sintiendo que tenemos derecho a revolcarnos en esos sentimientos, diciendo: \"¡Llevo toda la vida trabajando para llegar a este punto de mi carrera, y ahora ha desaparecido todo!\". Podemos sentirnos con libertad para mentir, engañar, vengarnos o renunciar a nuestros principios para aliviar nuestra angustia. O podemos limitarnos a vivir en la melancolía permanente.",
+      "La otra manera de reaccionar es la de Abraham: dar un paseo monte arriba. Podría decir: \"Veo que me llamas a vivir mi vida sin algo de lo que yo pensaba que no podía prescindir. Pero, si te tengo, poseo la única riqueza, salud, amor, honor y seguridad que realmente necesito y que nunca perderé\". Muchos de estos dioses falsos, por no decir la mayoría, pueden quedarse en nuestras vidas una vez los hayamos \"degradado\" a un puesto inferior a Dios. Entonces, no nos dominarán ni asediarán con ansiedad, orgullo, ira y agobio.",
+      "No debemos cometer el error de pensar que lo único que debemos hacer es estar dispuestos a separarnos de nuestros ídolos, en lugar de abandonarlos por completo. Si Abraham hubiera subido a la montaña pensando \"Lo único que tengo que hacer es poner a Isaac sobre el altar, pero sin sacrificarlo de verdad\", no habría superado la prueba. Para que un elemento presente en nuestras vidas sea seguro, tiene que haber dejado de ser un ídolo. Esto sólo puede suceder cuando estamos realmente dispuestos a vivir sin ello, cuando decimos desde el corazón: \"Como tengo a Dios, puedo vivir sin ti\"."
+    ],
+    reflection: "¿Cuál es tu \"monte\" en este momento? ¿Hay algo que Dios te está pidiendo que pongas en el altar, aunque te cueste todo?",
+    prayer: "Padre, dame la gracia de subir al monte cuando me llames. Que no me aferre a nada que no sea Tú. Ayúdame a decir desde el corazón: 'Si te tengo a Ti, tengo todo'. Amén."
+  },
+  {
+    title: "El Amor como Ídolo",
+    subtitle: "Cuando el amor romántico ocupa el lugar de Dios",
+    verse: "\"Cuando desapareció el paradigma religioso, el ser humano buscó un 'tú'... El amor se convirtió en la solución romántica.\" — Ernest Becker",
+    content: [
+      "El anhelo humano del amor verdadero se ha celebrado siempre en canciones y novelas, pero nuestra cultura contemporánea lo ha magnificado en un grado impresionante. Los teatros musicales están repletos de canciones de amor, pero algunas revelan la cara oculta de esta búsqueda moderna. Se escuchan personajes que admiten que sin el romance \"mi vida carece de sentido\", aunque esa misma relación sea agotadora o incluso dañina. Se depende en exceso del enamoramiento como fuente de identidad y de valor personal.",
+      "En los primeros tiempos de su ministerio pastoral, Keller conoció a una mujer llamada Sally, que tuvo la desgracia de nacer siendo hermosa. Desde niña entendió el poder que podía tener gracias a su atractivo físico. Al principio, usó su belleza para manipular a otros, pero al final fueron los demás quienes la usaron para manipularla a ella. Llegó a sentir que estaba indefensa e invisible a menos que algún hombre estuviera enamorado de ella. No soportaba estar sola. Como resultado, estaba dispuesta a mantener relaciones sentimentales con hombres que la maltrataban.",
+      "¿Por qué soportaba ese maltrato? Había llegado al punto de buscar en los hombres el tipo de afirmación y aceptación profundas que sólo puede proporcionar Dios. Como resultado, se convirtió en esclava del amor. Convertir el amor en un ídolo puede significar que el amante le explote y abuse de usted, o provocar una ceguera espantosa ante las patologías en la relación. Un apego idólatra a alguien puede llevarle a incumplir cualquier promesa, racionalizar toda indiscreción o traicionar cualquier otra lealtad, todo con objeto de mantenerlo. Practicar la idolatría significa ser un esclavo.",
+      "Ernest Becker explicó que la cultura secular ha hecho del amor romántico una especie de sustituto de Dios. Ahora que muchas personas piensan que están aquí por accidente y que no fueron creadas con un propósito, ¿cómo insuflan en sus vidas un sentido de dignidad? Una de las maneras principales es mediante el \"romance apocalíptico\": esperamos que el sexo y el romance nos ofrezcan la trascendencia y el sentido que solía proporcionarnos la fe. Hablando del individuo secular moderno, Becker escribe que el objeto del amor se convierte en Dios, y que lo que anhelamos cuando elevamos a nuestra pareja sentimental a esa posición es la redención. Pero las parejas humanas no nos pueden dar tal cosa."
+    ],
+    reflection: "¿Has buscado en una relación romántica lo que solo Dios puede darte? ¿Cómo afecta ese peso a tus relaciones?",
+    prayer: "Señor, libérame de buscar en el amor humano lo que solo Tu amor puede llenar. Que mis relaciones sean un reflejo de Tu gracia, no la fuente de mi identidad. Amén."
+  },
+  {
+    title: "Jacob y Raquel",
+    subtitle: "La vacuidad que busca ser llenada por otra persona",
+    verse: "\"Así sirvió Jacob por Raquel siete años; y le parecieron como pocos días, porque la amaba.\" — Génesis 29:20",
+    content: [
+      "La historia de Jacob y Lea en Génesis 29 ilustra cómo la búsqueda del amor puede convertirse en una forma de esclavitud. Jacob huyó a la familia de su madre, que le aceptó. Su tío Labán le contrató como pastor. Cuando Labán le preguntó qué quería a cambio por administrar sus rebaños, la respuesta de Jacob fue una sola palabra: Raquel. Jacob se encandiló profundamente de ella, quien era descrita como de hermosa figura y bello semblante.",
+      "Jacob ofreció el sueldo de siete años por ella, que en aquella época era un precio exorbitado por una esposa. Y le parecieron como pocos días porque la amaba. Cuando llegó el momento de reclamarla, el texto dice con una franqueza inusual que Jacob estaba consumido por el deseo emocional y sexual por ella. ¿Por qué semejante intensidad? Porque la vida de Jacob estaba vacía. Nunca disfrutó del amor de su padre, había perdido a su querida madre y, sin duda, ignoraba el amor y el cuidado de Dios. Al contemplar a Raquel, probablemente dijo para sí: \"Si la tuviera, por fin algo saldría bien en mi vida miserable. Si la tuviera, todo se arreglaría\".",
+      "Los deseos de su corazón de encontrar sentido y afirmación se concentraron en Raquel. Pero la vida de Lea también encalló en los arrecifes de la tristeza. Ella era la hermana mayor, menos agraciada, que nadie quería. Intentó encontrar la felicidad y la identidad por medio de los valores familiares tradicionales: tener hijos. Con cada hijo pensaba: \"Mi marido me amará\". Pero, en lugar de eso, cada nacimiento la empujaba a mayor profundidad en el infierno de la soledad. Cada día de su vida estaba condenada a ver cómo el hombre al que más amaba se refugiaba en los brazos de su hermana.",
+      "En el trasfondo de toda vida resuena una nota subyacente de desencanto cósmico. Jacob dijo: \"Si consigo a Raquel, todo irá bien\". Y se acostó con aquella que pensaba que era Raquel, pero a la mañana siguiente descubrió que era Lea. Un comentarista dijo acerca de este versículo que es \"una miniatura de nuestro desencanto, el que experimentamos a partir del Edén\". Con todo nuestro respeto por Raquel: independientemente de en qué pongamos nuestras esperanzas, por la mañana es siempre Lea, no Raquel. Nadie ha expresado esto mejor que C. S. Lewis: los anhelos que nacen en nosotros jamás pueden ser realmente satisfechos por ninguna criatura."
+    ],
+    reflection: "¿En qué momentos de tu vida has experimentado ese \"desencanto matinal\", cuando lo que creías que te traería felicidad no lo hizo? ¿Qué aprendiste?",
+    prayer: "Señor, solo Tú puedes satisfacer los anhelos más profundos de mi corazón. Perdóname cuando espero de las personas lo que solo Tú puedes dar. Hazme libre para amar sin cargar a otros con mis expectativas. Amén."
+  },
+  {
+    title: "El Desencanto Cósmico",
+    subtitle: "La insatisfacción que señala hacia Dios",
+    verse: "\"Si encuentro en mi ser un deseo que no puede satisfacer ninguna experiencia mundanal, la explicación más probable es que fuera hecho para otro mundo.\" — C.S. Lewis",
+    content: [
+      "Nunca llevaremos una vida sabia hasta que entendamos que en el trasfondo de toda vida resuena una nota de desencanto cósmico. Si usted se casa como lo hizo Jacob, poniendo todo el peso de sus esperanzas y anhelos más profundos en la persona con quien se despose, la aplastará con sus expectativas. Distorsionará su vida y la de su cónyuge de mil formas distintas. Nadie, ni siquiera la mejor persona, puede dar a su alma todo lo que esta necesita.",
+      "C. S. Lewis describe este fenómeno en Mero Cristianismo: \"La mayoría de personas, si realmente han aprendido a mirar en sus corazones, sabrán que quieren, y quieren ardientemente, algo que no pueden tener en este mundo. Los anhelos que nacen en nosotros cuando nos enamoramos por primera vez, o cuando pensamos por primera vez en un país extranjero, son anhelos que ni el matrimonio, ni el viaje, ni el aprendizaje pueden realmente satisfacer. Hubo algo que aprehendimos en ese primer momento de anhelo que en la realidad se desvanece\".",
+      "Cuando al final usted comprende este desencanto cósmico, hay cuatro maneras de reaccionar. Puede echar la culpa a esas cosas que le han decepcionado e intentar conseguir otras mejores —este es el camino de la idolatría continuada y de la adicción espiritual—. Lo segundo que puede hacer es culparse a sí mismo. Tercero, puede culpar al mundo y volverse duro, cínico y vacío. Por último, como expone C. S. Lewis, también puede reorientar el foco de su vida para que apunte a Dios: si encuentro en mí un deseo que no puede satisfacer ninguna experiencia mundanal, la explicación más probable es que fui hecho para otro mundo.",
+      "Este desencanto, esta desilusión cósmica, está presente en toda la vida, pero la sentimos especialmente en aquellas cosas en las que más habíamos depositado nuestras esperanzas. La buena noticia es que esa insatisfacción no es un problema que debamos resolver, sino una señal que debemos seguir. Apunta más allá de este mundo, hacia Aquel que es la fuente de toda satisfacción verdadera. La sed que ninguna criatura puede apagar es precisamente la sed que Dios diseñó para llevarnos de vuelta a Él."
+    ],
+    reflection: "¿Hay un anhelo en tu vida que ninguna experiencia terrenal ha podido satisfacer? ¿Qué te dice eso sobre para qué fuiste creado?",
+    prayer: "Señor, gracias porque el desencanto que siento ante las cosas de este mundo es un llamado a buscarte a Ti. Que nunca me conforme con sustitutos cuando Tú, la Fuente verdadera, estás disponible. Amén."
+  },
+  {
+    title: "El Novio Verdadero",
+    subtitle: "Lea, el amor que nadie quería, y el Dios que la amó",
+    verse: "\"Y vio Jehová que Lea era menospreciada, y le dio hijos.\" — Génesis 29:31",
+    content: [
+      "Lea es la única persona en la triste historia de Jacob que tiene un cierto progreso espiritual, aunque suceda al final de todo. Una de las cosas que destacan los eruditos hebreos es que, en todas las afirmaciones de Lea, clamaba al Señor. Usaba el nombre Yahvé, el Dios que se había revelado a Abraham, el Dios de gracia. Aun en medio de sus luchas y su confusión, Lea extendía las manos hacia un Dios personal de gracia.",
+      "Después de varios años criando hijos, llegó el momento de avanzar. Cuando Lea dio a luz a su cuarto hijo, Judá, dijo: \"Esta vez alabaré a Jehová\". Esta afirmación fue diferente de todas las que había hecho después de sus otros partos. No mencionó a su esposo ni al bebé. Parece ser que, por fin, había apartado de su esposo y de sus hijos las esperanzas más profundas de su corazón y las había depositado en el Señor. Jacob y Labán le habían robado la vida a Lea, pero, cuando al final entregó su corazón al Señor, la recuperó.",
+      "Aquel niño era Judá, y en Génesis 49 se nos dice que por medio de él vendría el Rey verdadero, el Mesías. Dios se había acercado a la mujer que nadie quería, la menospreciada, haciendo de ella una antepasada de Jesús. La salvación vino al mundo no a través de la hermosa Raquel, sino de la mujer que nadie quería, la desestimada. Cuando el Señor vio que Lea no era amada, Él la amó. Dios le estaba diciendo: \"Yo soy el verdadero novio. Soy el esposo de las que no lo tienen. Soy el padre de los huérfanos\".",
+      "Este es el Dios que salva por gracia. Los dioses de las religiones moralistas favorecen a las personas con éxito y a las que más rinden. Pero el Dios de la Biblia es aquel que desciende a este mundo para llevar a cabo la salvación y darnos una gracia que nunca podríamos alcanzar solos. Ama a los no queridos, los débiles y los indeseados. No es solamente un rey, y nosotros sus súbditos; no es sólo un pastor, y nosotros sus ovejas. Es un esposo, y nosotros somos su esposa. Está enamorado de nosotros, incluso de aquellos que pasan desapercibidos para todos los demás. Este amor es el poder para superar nuestras idolatrías."
+    ],
+    reflection: "¿Te has sentido como Lea, menospreciado o no amado? ¿Puedes recibir hoy la verdad de que Dios te ve y te ama precisamente en ese lugar?",
+    prayer: "Señor, gracias porque amas a los que el mundo no quiere. Gracias porque me ves cuando me siento invisible. Que Tu amor sea suficiente para llenar cada vacío en mi corazón. Amén."
+  },
+  {
+    title: "El Dinero como Señor",
+    subtitle: "La codicia y cómo el dinero puede convertirse en un ídolo",
+    verse: "\"No podéis servir a Dios y a las riquezas.\" — Lucas 16:13",
+    content: [
+      "Friedrich Nietzsche propuso que, dado que la ausencia de Dios en la cultura occidental iba a más, sustituiríamos a Dios por el dinero: \"Lo que antes se hacía 'por amor a Dios' se hace ahora por amor al dinero, es decir, el amor a aquello que en el presente nos ofrece el sentimiento más intenso de poder y de buena conciencia\". En resumen, Nietzsche presagió que seguramente el dinero se convertiría en el principal dios falso de la cultura occidental. El tiempo le ha dado la razón.",
+      "El apóstol Pablo afirma que la codicia no era simplemente una mala conducta, sino que la avaricia es \"idolatría\" (Colosenses 3:5). El dinero puede revestirse de atributos divinos, por lo cual la relación que mantengamos con él se aproxima a la adoración y al acatamiento. Puede convertirse en una adicción espiritual y, como todas las adicciones, oculta a sus víctimas sus verdaderas proporciones. Cada vez corremos mayores riesgos para obtener una satisfacción menor de las cosas que anhelamos, hasta que se produce una catástrofe.",
+      "Jesús advierte a las personas mucho más a menudo sobre la codicia que sobre el sexo, pero nadie se considera culpable de este pecado. La codicia resulta especialmente difícil de detectar en nosotros mismos. Esto se debe en parte a las dinámicas sociológicas: todo el mundo tiende a vivir dentro de un paréntesis socioeconómico concreto. Una vez en ese paréntesis, usted se ve rodeado automáticamente por bastantes personas que tienen más dinero que usted. El corazón humano siempre quiere justificarse: \"No vivo tan bien como él o ella. Comparados con ellos, mis ingresos son modestos\". Puede razonar así por muy lujosamente que viva.",
+      "Jesús utiliza todas las metáforas bíblicas básicas sobre la idolatría y las aplica a la codicia y al dinero. Según la Biblia, los idólatras hacen tres cosas con sus ídolos: los aman, confían en ellos y los obedecen. Cuando Jesús dice que \"servimos\" al dinero, usa una palabra que significa el servicio solemne y pactado que se presta a un rey. Si usted vive para el dinero, es un esclavo. Sin embargo, si Dios se convierte en el centro de su vida, esto destrona al dinero y lo vuelve contingente. Es una cosa u otra: o bien sirve a Dios, o se expone a la esclavitud de Mammón."
+    ],
+    reflection: "¿Controlan tus emociones los altibajos de tu cuenta bancaria? ¿Cuánto de tu identidad está ligada a tu situación económica?",
+    prayer: "Señor, que el dinero sea en mis manos un instrumento para Tu gloria y el bien de otros, nunca un señor que me controle. Libérame de la codicia que no sé ver en mí mismo. Amén."
+  },
+  {
+    title: "Zaqueo y la Gracia",
+    subtitle: "Cuando la gracia derroca al dinero como dios",
+    verse: "\"Hoy ha venido la salvación a esta casa.\" — Lucas 19:9",
+    content: [
+      "Zaqueo era el architelones, el archirrecaudador. Era uno de los ciudadanos más ricos y más odiados de la sociedad israelita. Había sacrificado todo lo demás por tener dinero: su reputación, su lugar en la comunidad, su dignidad. Sin embargo, algo lo impulsó a querer ver a Jesús. Y su disposición a subirse a un árbol —un acto ridículo para un hombre de su posición— apuntaba a algo rayano en la desesperación. La riqueza que había acumulado no había llenado el vacío en su interior.",
+      "Jesús se acercó y vio una multitud formada sobre todo por personajes religiosos respetables. En lugar de dirigirse a alguno de ellos, interpeló al \"pecador\" más destacado de todos. Sin dudarlo, le dijo: \"Zaqueo, date prisa, desciende, porque hoy es necesario que pose yo en tu casa\". Zaqueo no abordó a Jesús con orgullo, sino con humildad. No tiró de dignidad y de riqueza; dejó a un lado su posición social en la vida y estuvo dispuesto a quedar en ridículo para poder ver a Jesús. Entonces, Jesús fue a su casa.",
+      "Cuando Zaqueo vio que Jesús había elegido a la persona menos virtuosa de la multitud para mantener una relación personal, todo su paradigma espiritual empezó a alterarse. Empezó a darse cuenta de que la salvación de Dios era por gracia, no se alcanzaba por medio de las victorias morales o las obras. Esa revelación le traspasó como un rayo, y dio la bienvenida a Jesús con alegría. Entonces prometió dar la mitad de sus bienes a los pobres y restituir cuatro veces lo que había defraudado.",
+      "Zaqueo quería seguir a Jesús y de inmediato se dio cuenta de que, si pretendía hacerlo, el dinero era un problema. Pero estas promesas no fueron la condición para la salvación, sino su consecuencia. Jesús dijo: \"Hoy ha venido la salvación a esta casa\". No dijo: \"Si vives así, la salvación vendrá\". La salvación de Dios no viene como respuesta a una vida transformada. La vida transformada es la respuesta a la salvación, ofrecida como un regalo. Se dio cuenta de que, aunque era rico materialmente, desde el punto de vista espiritual había estado en bancarrota. La gracia de Dios había transformado su actitud hacia su riqueza."
+    ],
+    reflection: "¿Qué tendría que cambiar en tu relación con el dinero si realmente creyeras que ya tienes todo lo necesario en Cristo?",
+    prayer: "Señor, que Tu gracia transforme mi relación con el dinero. Que pueda ser generoso porque sé que Tú provees. Que el dinero sea siervo y nunca señor en mi vida. Amén."
+  },
+  {
+    title: "Ídolos Profundos",
+    subtitle: "Las motivaciones ocultas detrás de lo que adoramos",
+    verse: "\"El pecado en nuestros corazones afecta a nuestras motivaciones básicas, de modo que se vuelven idolátricas.\" — Timothy Keller",
+    content: [
+      "Para entender cómo empezó a cambiar el corazón de Zaqueo, debemos pensar que los dioses falsos se presentan en grupos, haciendo que la estructura de la idolatría en el corazón sea compleja. Hay \"ídolos profundos\" dentro del corazón, bajo los \"ídolos de superficie\" más concretos y visibles a los que servimos. El pecado en nuestros corazones afecta a nuestras motivaciones básicas, de modo que se vuelven idolátricas.",
+      "Algunas personas se sienten profundamente motivadas por el deseo de influir y de tener poder, mientras a otras las emociona más la aprobación y el aprecio de los demás. Hay quienes anhelan por encima de todo el bienestar emocional y físico, mientras otros buscan la seguridad, el control de su entorno. A las personas con el ídolo profundo del poder no les importa ser impopulares si con ello obtienen influencia. Las personas más motivadas por la aprobación hacen lo contrario: renunciarán alegremente al poder para que todo el mundo piense bien de ellos.",
+      "Los \"ídolos de superficie\" son cosas como el dinero, nuestro cónyuge o nuestros hijos, por medio de los cuales nuestros ídolos profundos buscan satisfacción. Por ejemplo, el dinero puede ser un ídolo de superficie que sirva para satisfacer impulsos más fundamentales. Algunas personas quieren tener mucho dinero como vía para controlar su mundo y su vida, y generalmente no gastan mucho y viven modestamente. Otros quieren dinero para tener acceso a círculos sociales y para estar atractivos. Hay quienes lo quieren porque les da poder sobre otros. En cualquier caso, el dinero funciona como un ídolo y, debido a los diversos ídolos profundos, da como resultado patrones conductuales muy distintos.",
+      "Por este motivo, los ídolos no se pueden erradicar eliminando sencillamente los de superficie. Podemos mirarlos y decir: \"Tengo que quitarle importancia a esto en mi vida. No debo permitir que me controle. Lo detendré\". Los ataques directos como ese no funcionarán, porque a los ídolos profundos se los debe atacar en el nivel del corazón. Sólo hay una manera de cambiar en ese nivel, y es por medio de la fe en el evangelio. La gracia de Cristo es el único poder suficientemente profundo para llegar a la raíz de la idolatría."
+    ],
+    reflection: "¿Cuál es tu ídolo profundo? ¿Es el poder, la aprobación, la comodidad o el control? ¿Cómo se manifiesta ese ídolo en diferentes áreas de tu vida?",
+    prayer: "Señor, examina los niveles más profundos de mi corazón. Llega donde yo no puedo llegar solo. Transforma mis motivaciones más íntimas para que busque glorificarte a Ti por encima de todo. Amén."
+  },
+  {
+    title: "La Pobreza de Cristo",
+    subtitle: "El evangelio como antídoto definitivo contra la codicia",
+    verse: "\"Por amor a vosotros se hizo pobre, siendo rico, para que vosotros con su pobreza fueseis enriquecidos.\" — 2 Corintios 8:9",
+    content: [
+      "En 2 Corintios 8 y 9, Pablo pide a una iglesia que haga una ofrenda para los pobres. Aunque es un apóstol con autoridad, escribe: \"No hablo como quien manda\". Lo que quiere decir es: \"No pretendo ordenaros nada. No quiero que esta ofrenda sea simplemente la respuesta a una petición\". No presiona directamente la voluntad. En lugar de eso, resume el evangelio con una de las frases más hermosas de toda la Biblia: \"Porque ya conocéis la gracia de nuestro Señor Jesucristo, que por amor a vosotros se hizo pobre, siendo rico, para que vosotros con su pobreza fueseis enriquecidos\".",
+      "Jesús, el Dios-hombre, tenía unas riquezas infinitas, pero, si se hubiera apegado a ellas, nosotros habríamos muerto en nuestra pobreza espiritual. Esta era la alternativa: si él seguía siendo rico, nosotros moriríamos pobres. Si él moría pobre, nosotros nos enriqueceríamos; nuestros pecados serían perdonados y seríamos admitidos en la familia de Dios. Pablo no se limitaba a dar a esta iglesia un mero precepto ético. Más bien, resumió el evangelio y confió en que esa comprensión transformaría los corazones y las billeteras.",
+      "Jesús renunció a su tesoro celestial para hacer de nosotros su tesoro. Cuando usted contemple eso, él pasará a ser suyo. El dinero dejará de ser el fundamento de su existencia y de su seguridad, y querrá bendecir a otros con lo que usted tenga. Cuanto más comprenda el evangelio, menos poder tendrá el dinero sobre usted. Piense en la gracia incalculable de Dios hasta que esto le convierta en alguien generoso.",
+      "La solución para la tacañería es una reorientación hacia la generosidad de Cristo en el evangelio, cómo él derramó su riqueza por mí. Ahora, no tienes que preocuparte por el dinero: la cruz demuestra que Dios cuida de ti y te dará seguridad. Ya no tienes que envidiar el dinero de nadie. El amor y la salvación de Dios te confieren un estatus notable, algo que el dinero no puede darte. Lo que destruye el poder del dinero sobre nosotros no es simplemente que nos esforcemos más por seguir el ejemplo de Cristo, sino que profundicemos nuestra comprensión de la salvación de Cristo."
+    ],
+    reflection: "¿Cómo cambia tu perspectiva sobre el dinero saber que Jesús se hizo pobre para que tú te enriquecieras espiritualmente?",
+    prayer: "Jesús, gracias porque dejaste Tu riqueza para hacerme a mí Tu tesoro. Que esa verdad me haga libre para ser generoso, sabiendo que en Ti tengo todo lo que realmente necesito. Amén."
+  },
+  {
+    title: "El Éxito como Ídolo",
+    subtitle: "La trampa del logro y el aplauso",
+    verse: "\"Lo que me impulsa en la vida es este miedo espantoso a la mediocridad.\" — Madonna",
+    content: [
+      "Madonna, la leyenda del pop, describió con sus propias palabras la seducción del éxito: \"Tengo una voluntad de hierro, que he concentrado siempre en superar una terrible sensación de indignidad... Supero uno de esos episodios y descubro que soy un ser humano especial, y luego llega otro bache y pienso que soy mediocre y carente de interés... Lo que me impulsa en la vida es este miedo espantoso a la mediocridad. Y no deja de empujarme y empujarme. Porque, aunque me he convertido en Alguien, aún tengo que demostrar que lo soy. Mi lucha nunca ha acabado\".",
+      "Para personas como ella, el éxito es como una droga que proporciona un sentido de importancia y de valor, pero el efecto se disipa rápidamente y se necesita tomar otra dosis. Debe hacerse una demostración tras otra. La fuerza impulsora no es la alegría, sino el miedo. Andrew Carnegie, uno de los hombres más ricos del mundo, escribió a sus 33 años: \"El ser humano debe tener un ídolo. La acumulación de riqueza es uno de los peores tipos de idolatría. No hay un ídolo más degradante que la adoración al dinero\". Resultan notables el candor y el conocimiento de sí mismo reflejados en esa anotación. Pero a pesar de eso, Carnegie no dejó de trabajar y muchos de los defectos que temía se hicieron realidad en su vida.",
+      "En la película Carros de fuego, un velocista olímpico manifiesta que no corre porque le guste, sino porque es un adicto. Antes de la prueba olímpica, admite con angustia: \"Diez segundos para justificar toda mi existencia\". ¿Cuántas personas viven así? ¿Cuántas han construido toda su identidad sobre un logro, una posición, un reconocimiento? El problema no es esforzarse o querer hacerlo bien. El problema es cuando el resultado de ese esfuerzo se convierte en la condición para sentirse valioso y amado.",
+      "Bill, a quien conocemos en el libro, había perdido mucho dinero durante la crisis económica de 2008-2009, después de haberse convertido al cristianismo tres años antes. \"Si esto me hubiera pasado antes de ser cristiano, me hubiera aborrecido a mí mismo, quizá hubiera vuelto a recurrir a la bebida o puede que al suicidio\", declaró. En determinada época, solo se sentía una persona digna y valiosa si ganaba dinero. Pero su identidad había cambiado. Ya no descansaba sobre el hecho de tener éxito, sino que se cimentaba en la gracia y el amor de Jesucristo. Por eso pudo decir: \"Hoy día le aseguro de corazón que nunca he sido tan feliz en toda mi vida\"."
+    ],
+    reflection: "¿Está tu sentido de valor personal ligado a lo que logras? ¿Qué pasa en tu interior cuando fracasas o cuando no eres reconocido?",
+    prayer: "Señor, que mi identidad no descanse en mis logros sino en Tu amor por mí. Que sea libre para trabajar duro sin que el resultado sea la condición de mi paz. Amén."
+  },
+  {
+    title: "El Poder como Ídolo",
+    subtitle: "La búsqueda de control y dominio",
+    verse: "\"El camino para ascender desciende; el camino para descender es ascender.\" — Predicador anónimo",
+    content: [
+      "En el siglo VI a.C., el rey babilonio Nabucodonosor era el hombre más poderoso del mundo. Sin embargo, el libro de Daniel revela que el hombre más poderoso del mundo no dormía bien. Tuvo un sueño que le perturbó profundamente: una figura inmensa que se vino abajo, con pies de barro. El teólogo Reinhold Niebuhr creía que el miedo y la ansiedad son el motivo de que muchos busquen el poder político. Incluso si el temor no es el motivo inicial para conseguirlo, casi siempre lo acompaña. Cuanto más asciende una persona, mayor es la posibilidad de padecer una caída espantosa.",
+      "Niebuhr argumentó que los seres humanos somos inseguros y que procuramos superar nuestra inseguridad mediante la voluntad de poder. Pretendemos que no estamos limitados. Pero los seres humanos tienen muy poco poder sobre sus vidas. El 95 por ciento de lo que marca el rumbo de sus vidas escapa por completo a su control: el siglo y lugar donde nacen, quiénes son sus amigos y familiares, su entorno durante la infancia, su estatura física, los talentos heredados genéticamente. No somos Creadores infinitos, sino criaturas finitas y dependientes.",
+      "El libro de C. S. Lewis La travesía del Viajero del Alba nos ofrece una parábola poderosa. Eustace Scrubb se quedó dormido sobre el tesoro de un dragón con pensamientos codiciosos y draconianos, y se convirtió en un dragón. Convertirse en dragón fue una \"consecuencia natural cósmica\". Como Eustace pensaba como un dragón, se convirtió en uno. Cuando ponemos nuestro corazón en el poder, nos convertimos en depredadores despiadados. Nos convertimos en aquello que adoramos. Eustace era ahora enormemente poderoso, pero también daba miedo, era horrible y estaba completamente solo.",
+      "Algo similar le sucedió a Nabucodonosor. Su orgullo lo llevó a vivir como un animal. Pero cuando alzó los ojos al cielo, su razón fue restaurada y mayor grandeza le fue añadida. Este es el patrón profundo de la gracia: Jesús perdió todo poder y se convirtió en siervo para salvarnos. Murió, pero su muerte condujo a la redención y a la resurrección. La inseguridad desaparece, el deseo de poder se corta de raíz. Como dijo el predicador: \"El camino para ascender desciende; el camino para descender es ascender\"."
+    ],
+    reflection: "¿De qué maneras intentas controlar tu entorno o a las personas a tu alrededor? ¿Qué miedo o inseguridad está detrás de esa necesidad de control?",
+    prayer: "Señor, en Tu presencia reconozco que no soy el capitán de mi destino. Tú eres el soberano. Ayúdame a descansar en Tu control y a servir en lugar de dominar. Amén."
+  },
+  {
+    title: "Los Ídolos de Nuestra Cultura",
+    subtitle: "Los dioses colectivos que nos moldean sin que nos demos cuenta",
+    verse: "\"Toda 'esperanza' cultural dominante que no sea el propio Dios es un dios falso.\" — Timothy Keller",
+    content: [
+      "Andrew Delbanco describió la cultura como las historias y los símbolos mediante los cuales intentamos mantener a raya la sospecha melancólica de que vivimos en un mundo que no tiene sentido. En el meollo de toda cultura encontramos su \"esperanza\" principal. Delbanco establece tres fases de la civilización estadounidense: en la primera, la esperanza se manifestaba por medio de un discurso cristiano. En la segunda, la Ilustración eliminó el concepto de un Dios personal y lo sustituyó por una nación deificada. Hoy, la vida consiste en crear un yo mediante la maximización de la libertad individual.",
+      "Los ídolos no sólo adoptan una forma individual; también pueden ser colectivos y sistémicos. Cuando estamos totalmente inmersos en una sociedad de personas que consideran que adorar a un ídolo concreto es normal, es casi imposible discernirlo. No debemos pensar que una cultura es menos idólatra que otra. Las sociedades tradicionales tienden a convertir la unidad familiar y el clan en un ente absoluto, lo cual puede conducir a asesinatos por honor, la consideración de las mujeres como objetos y la violencia contra los homosexuales. Las culturas occidentales, seculares, convierten la libertad individual en un ídolo.",
+      "El análisis cultural es básicamente un estudio de la idolatría. Los ídolos culturales pueden ser el progreso tecnológico y la prosperidad económica. Los ídolos de las sociedades tradicionales incluyen la familia, el trabajo duro, el deber y la virtud moral, mientras que los de las sociedades occidentales son la libertad individual, el descubrimiento de uno mismo, la prosperidad y la realización personales. Todas estas cosas pueden adoptar, y adoptan, un tamaño y un poder desproporcionados dentro de una sociedad. Nos prometen seguridad, paz y felicidad; sólo tenemos que fundamentar nuestras vidas en ellas.",
+      "También puede haber ídolos intelectuales, que a menudo se llaman ideologías. Los intelectuales europeos de finales del siglo XIX y principios del XX se convencieron del paradigma de Rousseau sobre la bondad innata de la naturaleza humana. La Segunda Guerra Mundial hizo trizas este espejismo. Beatrice Webb, arquitecta del estado del bienestar británico moderno, escribió décadas después: \"Me doy cuenta de lo persistentes que son los impulsos y los instintos malvados en el hombre. Ningún grado de conocimiento o de ciencia servirá de nada a menos que podamos frenar o dominar el impulso maligno\". Cuando tomamos una verdad parcial y la convertimos en verdad absoluta, hemos creado un ídolo intelectual."
+    ],
+    reflection: "¿Qué valores culturales de tu entorno has absorbido sin cuestionarlos? ¿Podrían estar compitiendo con tu lealtad a Cristo?",
+    prayer: "Señor, dame ojos para ver los ídolos de mi cultura que he absorbido sin darme cuenta. Que sea transformado por la renovación de mi entendimiento, no conformado a este siglo. Amén."
+  },
+  {
+    title: "Los Ídolos de Nuestra Religión",
+    subtitle: "Cuando la fe misma se convierte en idolatría",
+    verse: "\"La idolatría está tan extendida que también domina el área religiosa.\" — Timothy Keller",
+    content: [
+      "¿Cómo nos pueden esclavizar nuestros ídolos culturales? La respuesta a los problemas culturales no es necesariamente una dosis mayor de religión. La idolatría está tan extendida que también domina esta área. Un ídolo es algo a lo que le pedimos las cosas que sólo puede darnos Dios. La idolatría funciona ampliamente dentro de las comunidades religiosas cuando la verdad doctrinal se eleva al rango de falso dios. Esto sucede cuando las personas se fundamentan en la rectitud de su doctrina para decidir cómo las ve Dios, en lugar de hacerlo sobre el propio Dios y su gracia.",
+      "Es un error sutil, pero letal. El indicio de que se ha caído en este tipo de autojustificación es que se convierte en lo que el libro de Proverbios llama un \"escarnecedor\". Los escarnecedores siempre manifiestan desprecio y desafío a sus adversarios, en lugar de gracia. Esto es una señal de que no se consideran pecadores salvos por gracia. En lugar de eso, su confianza en la justicia de sus puntos de vista les hace sentirse superiores. La certeza doctrinal que no produce humildad se ha convertido en ídolo.",
+      "Otra forma de idolatría dentro de las comunidades religiosas convierte en dios falso los dones espirituales y los progresos en el ministerio. Los dones espirituales —el talento, la capacidad, el rendimiento, el crecimiento— a menudo se confunden con lo que la Biblia denomina \"frutos\" del Espíritu —amor, gozo, paciencia, humildad, valor, templanza—. Incluso los líderes religiosos que creen intelectualmente \"Soy salvo sólo por gracia\" pueden llegar a sentir en su corazón que su posición delante de Dios depende en gran medida del número de vidas que cambien en el mundo.",
+      "Otro tipo de idolatría religiosa tiene que ver con la propia vida moral. La naturaleza por defecto del corazón humano le induce a intentar controlar a Dios y a los demás mediante la conducta moral. Como hemos llevado una vida de virtud, sentimos que Dios —y las personas a las que conocemos— nos deben su respeto y su apoyo. Aunque podamos decir que Jesús es nuestro ejemplo y nuestra inspiración, en el fondo seguimos buscando salvarnos mediante nuestro esfuerzo moral. Esta es la raíz del fariseísmo, una forma de idolatría profundamente religiosa que termina en arrogancia y en dureza de corazón."
+    ],
+    reflection: "¿Hay maneras en que tu propia religiosidad podría haberse convertido en un ídolo? ¿Estás descansando en Cristo o en tu desempeño espiritual?",
+    prayer: "Señor, que mi fe no sea un logro del que enorgullecerme, sino una respuesta al amor que has derramado sobre mí en Cristo. Guárdame del fariseísmo y del orgullo espiritual. Amén."
+  },
+  {
+    title: "La Historia de Jonás",
+    subtitle: "Los ídolos que nos impiden obedecer a Dios",
+    verse: "\"Y Jonás se levantó para huir de la presencia de Jehová.\" — Jonás 1:3",
+    content: [
+      "Por 2 Reyes 14:25 sabemos que Jonás había llamado al rey israelita Jeroboam a seguir una política militar expansionista para ampliar las fronteras del país. Sus contemporáneos, Amós y Oseas, se oponían a la corrupción de las administraciones monárquicas. Sin embargo, Jonás parece haber ignorado deliberadamente las fechorías del rey, movido por su celo nacionalista. A semejante profeta le dejaría anonadado el mandamiento de Dios que le ordenaba ir a la ciudad de Nínive, la capital del enemigo, y predicar en ella.",
+      "Nínive era la ciudad más poderosa del mundo, la sede del imperio asirio, cuyo ejército amenazaba con conquistar Israel. Hacer algo que beneficiara en cualquier sentido a Asiria se hubiera considerado un suicidio nacional. Y a Jonás se le enviaba no solo a predicarles sino a darles una oportunidad de arrepentirse y escapar del juicio. La misión era imposible e inaceptable. Por eso huyó. La respuesta de Jonás revela los ídolos que operaban en su corazón: un ídolo personal (el éxito en su ministerio), un ídolo cultural (los intereses nacionales de Israel por encima de la obediencia a Dios) y un ídolo religioso (la arrogancia moral, la sensación de ser superior a los ninivitas).",
+      "En el vientre del pez, Jonás elevó una oración que contiene una línea misteriosa: \"Los que siguen vanidades ilusorias, su misericordia abandonan\". Pero Jonás llama a esa gracia \"su propia gracia\", indicando que también les pertenece a los ninivitas tanto como a él. La idea de que la gracia de Dios era de ellos tanto como suya le alcanzó como un rayo. Si es gracia auténtica, nadie es digno de ella, lo cual los hacía a todos iguales. \"¡La salvación viene sólo del Señor!\" No pertenece a una raza o a una clase de personas. Este fue el inicio del cambio en el corazón de Jonás.",
+      "Jonás obedeció, predicó, y para sorpresa de todos, incluyendo la suya, los ninivitas se arrepintieron. Pero entonces Jonás se puso furioso. Lo que al final se reveló en su corazón fue que no solo no quería predicar en Nínive —no quería que Dios los salvara. Su odio a esa raza era tan profundo que consideraba que lo peor que podía pasar era que Dios les perdonase. Este es el poder de la idolatría: puede conseguir que llamemos bien al mal y mal al bien. Puede corromper incluso a un profeta de Dios hasta el punto de que odie la misericordia divina."
+    ],
+    reflection: "¿Hay grupos de personas a los que no deseas ver alcanzados por la gracia de Dios? ¿Qué ídolo podría estar detrás de esa actitud?",
+    prayer: "Señor, examina si hay en mi corazón algo parecido al orgullo de Jonás. Que Tu amor por todos los pueblos transforme mi corazón. Que quiera lo que Tú quieres para todos. Amén."
+  },
+  {
+    title: "La Raza y la Gracia",
+    subtitle: "Cuando el orgullo étnico o cultural niega el evangelio",
+    verse: "\"Pedro no actuaba conforme al evangelio.\" — Gálatas 2:14",
+    content: [
+      "El orgullo racial y el chauvinismo cultural no pueden coexistir con el evangelio de la gracia. Se excluyen mutuamente, una cosa repele a la otra. Debido a la naturaleza del corazón humano, que siempre intenta justificarse, es natural que consideremos que las características de nuestra cultura o clase son superiores a las de todo el mundo. Pero el evangelio contrarresta esta tendencia natural. Esto lo vemos en la confrontación entre Pablo y Pedro en Gálatas 2.",
+      "Pedro, apóstol judío, había sido educado para ver a los gentiles como \"impuros\" espiritualmente, personas con quienes no debía comer. En las culturas de la antigüedad, comer con alguien simbolizaba la apertura y la aceptación. Cuando Pablo vio que Pedro se negaba a cenar con los gentiles cristianos, le reprendió por su racismo. Pero, ¿cómo lo hizo? No le dijo: \"Estás transgrediendo las normas sobre el racismo\", sino más bien que Pedro \"no actuaba conforme al evangelio\". Pablo sostenía que el prejuicio racial negaba el mismísimo principio de la salvación por gracia.",
+      "Decía: \"Pedro, si todos somos salvos sólo por gracia, ¿cómo puedes sentirte superior a nadie? ¿Cómo puedes excluir a otros en virtud de su raza y su nacionalidad? ¡Usa el evangelio que llevas en el corazón!\". Por supuesto, Pedro conocía el evangelio hasta cierto punto, pero en un nivel más profundo aquel no le había influenciado completamente. No caminaba rectamente conforme a la verdad del evangelio. Esta brecha entre lo que creemos con la mente y lo que gobierna realmente nuestras emociones y acciones es precisamente el campo donde opera la idolatría.",
+      "Quienes no están seguros en Cristo buscan salvavidas espirituales con los que respaldar su confianza, y en esa búsqueda frenética no sólo se aferran a los despojos de la capacidad y la justicia que encuentran en sus vidas, sino que se fijan en su raza, su membresía en un partido, sus parejas familiares, sociales y eclesiales, y su cultura, usándolos como medio para autorrecomendarse. Se visten con su cultura como si fuera una armadura contra las dudas sobre sí mismos, pero se convierte en una camisa de fuerza mental. El único antídoto es la fe integral en la obra salvadora de Cristo."
+    ],
+    reflection: "¿Hay maneras en que tu identidad cultural, nacional o étnica afecta negativamente tu trato a personas de otros grupos? ¿El evangelio realmente está gobernando tu corazón en esa área?",
+    prayer: "Señor, que el evangelio de gracia destruya toda barrera de orgullo racial o cultural en mi corazón. Que me vea a mí mismo y a todos los demás como igualmente dependientes de Tu misericordia. Amén."
+  },
+  {
+    title: "Jonás y el Final Impactante",
+    subtitle: "Los ídolos distorsionan tanto lo que pensamos como lo que sentimos",
+    verse: "\"¿Y no tendré yo piedad de Nínive, aquella gran ciudad?\" — Jonás 4:11",
+    content: [
+      "La segunda misión de Jonás resultó en el avivamiento más grande registrado en la Biblia. Una ciudad entera se arrepintió. Cualquiera hubiera esperado que el libro acabase con esa nota maravillosa. Más allá de toda esperanza, Jonás había predicado y los ninivitas respondieron. Pero entonces, el verdadero impacto del relato llega en el momento que debería haber constituido el mayor triunfo de Jonás. Su reacción positiva de Nínive le enfureció hasta el punto de acusar a Dios de ser malo, ¡y pidió que le matase en aquel mismo lugar!",
+      "Al final se revelan plenamente las motivaciones del corazón de Jonás. \"¡Lo sabía!\", dice. \"¡Sabía que eres un Dios compasivo, que perdona enseguida, que anhela salvar, que tiene una paciencia constante! ¡Sabía que no podía fiarme de ti! Por eso huí al principio. Tenía miedo de que, si presentaba a un Dios como tú a esas personas, los perdonarías. ¡Ya he tenido bastante! ¡Dimito! ¡Quítame la vida!\" En la Biblia, no encontramos un discurso más impactante que este.",
+      "La idolatría distorsiona nuestros sentimientos. De igual manera que los ídolos son cosas buenas que se han convertido en objetivos últimos, los deseos que generan nos paralizan y sobrepasan. Los ídolos generan creencias falsas, como \"Si no consigo X, mi vida no tendrá sentido\" o \"Como he perdido Y o he fracasado en Z, nunca volveré a ser feliz\". Estas creencias magnifican las decepciones y los fracasos ordinarios convirtiéndolos en experiencias que destruyen la vida. Cuando la idolatría se proyecta al futuro genera temor paralizante; cuando se proyecta al pasado genera culpa irremediable; y cuando se proyecta al presente genera ira y desespero.",
+      "El libro de Jonás acaba con una pregunta. Dios pregunta a Jonás: \"Tu amor, ¿no debería ser como el mío? ¿Dejarás de ensimismarte, abandonarás tu idolatría y empezarás a vivir para mí y para otros?\". Y el libro acaba ahí. Este final brillante apunta directamente a nosotros. La pregunta va dirigida directamente a usted y a mí, porque tanto usted como yo somos Jonás. Estamos tan esclavizados a nuestros ídolos que no nos importan las personas que son diferentes o difíciles de amar. ¿Estamos dispuestos a cambiar como hizo Jonás?"
+    ],
+    reflection: "¿Hay un área de tu vida donde un ídolo está distorsionando tus emociones, haciéndote reaccionar de manera desproporcionada o ilógica?",
+    prayer: "Señor, que no sea como Jonás, que tuvo más compasión por una planta que por miles de personas. Que Tu amor por este mundo llene mi corazón y moldee mis afectos. Amén."
+  },
+  {
+    title: "El Auténtico Jonás",
+    subtitle: "Cómo Cristo cumplió lo que Jonás no pudo",
+    verse: "\"Porque el Hijo del Hombre vino a buscar y a salvar lo que se había perdido.\" — Lucas 19:10",
+    content: [
+      "Siglos más tarde, alguien que entró en la historia anunció a sus asombrados oyentes que él era el último Jonás. Cuando Jesucristo vino al mundo, abandonó la zona de confort por antonomasia, para ministrar a un pueblo que no sólo podía hacerle daño, sino que se lo iba a hacer. Y para salvarles, tendría que morir por ellos. Mientras que se pensó que el Jonás originario había muerto en el mar, Jesús murió de verdad y luego resucitó. Esto fue lo que Jesús definió como la señal de Jonás.",
+      "En Marcos 4, leemos un relato de la vida de Jesús que evoca deliberadamente la historia del Antiguo Testamento. Se produjo una tremenda tormenta y, al igual que Jonás, Jesús dormía en medio de ella. Como los marineros, los discípulos de Jesús se sintieron aterrados. En ambos casos, la tormenta se aplacó milagrosamente. Pero hay una gran diferencia: a Jonás, le arrojaron solamente a una tormenta de viento y agua. Sin embargo, en la cruz, Jesús fue arrojado a la tormenta definitiva: toda la justicia y el castigo divinos que merecemos por nuestras malas obras.",
+      "Cuando lucho con mis ídolos, pienso en Jesús, que inclinó voluntariamente su cabeza frente a la tormenta definitiva, afrontándola directamente por mí. Se sumergió en aquella tormenta de espanto para que yo no tuviese que volver a temer ninguna tormenta de mi vida. Si hizo eso por mí, sé que mi valor, mi confianza y mi misión en la vida descansan en él. Las tormentas de este mundo pueden arrebatarme muchas cosas, incluso mi vida física, pero no mi Vida. Cristo es mi Vida.",
+      "Dios dejó entrever a Jonás que pensaba amar a las grandes ciudades del mundo de un modo que Jonás había rehusado amarlas. En el evangelio de Jesucristo, el auténtico Jonás, Dios cumplió esa promesa. Jesús no solo vino a predicar el arrepentimiento, sino que fue más lejos: fue a la cruz para pagar el precio de la desobediencia de todos. Él es el misionero que no huyó de su misión, que no condicionó su amor a la respuesta de los destinatarios, que fue hasta el fin aunque eso costara todo. Por eso su evangelio tiene el poder de derribar los ídolos más arraigados."
+    ],
+    reflection: "¿Cómo te inspira la imagen de Jesús como el \"verdadero Jonás\" que sí fue, sí amó y sí pagó el precio? ¿Cómo cambia esto tu disposición para obedecer a Dios en lo difícil?",
+    prayer: "Señor Jesús, gracias por ser el Jonás verdadero que no huyó sino que fue hasta la cruz por amor a nosotros. Que ese amor rompa mis excusas y me haga disponible para Tu misión. Amén."
+  },
+  {
+    title: "La Lucha de Jacob",
+    subtitle: "Aferrarse a Dios en lugar de a los ídolos",
+    verse: "\"No te dejaré, si no me bendices.\" — Génesis 32:26",
+    content: [
+      "Jacob huyó a un país lejano y, a pesar de muchos problemas, logró prosperar. Pero finalmente llegó el día en que tuvo que regresar a su tierra natal. A medida que se acercaba, recibió algunas noticias alarmantes: su hermano Esaú venía a recibirle con cuatrocientos hombres. Parecía que se habían hecho realidad sus peores temores. Jacob se puso en acción: primero oró, luego envió regalos, luego dividió a su familia. Pero toda su vida había consistido en intentar maniobrar y controlar las situaciones, en buscar la bendición mediante el engaño y la estrategia.",
+      "Aquella noche, en las tinieblas profundas, Jacob fue atacado inesperadamente por una figura solitaria, con la que luchó durante horas. Al alba, cuando el contendiente vio que no podía con él, tocó en el sitio del encaje de su muslo y se descoyuntó. Aunque el personaje le tocó apenas con su dedo y lo dejó cojo de por vida, esto reveló que había estado conteniendo su fuerza. Tenía un poder enorme, sobrehumano. Cuando Jacob se dio cuenta de con quién luchaba, hizo lo más impresionante de toda su vida: se aferró todavía más al contendiente y dijo: \"¡No te dejaré, si no me bendices!\".",
+      "Jacob vino a decir algo de este tenor: \"¡Qué tonto he sido! La bendición que he estado esperando toda la vida la busqué en la aprobación de mi padre. La busqué en la belleza de Raquel. Pero estaba en Ti. Ahora, no te dejaré marchar hasta que me bendigas. Eso es lo único importante. Me da lo mismo morir en el proceso, porque, si no tengo la bendición de Dios, no tengo nada. Nada puede sustituirla\". Como resultado, Dios \"lo bendijo allí\". Son unas palabras hermosas y misteriosas.",
+      "Jacob se alejó como la propia imagen de alguien que ha creído el evangelio: quedó cojo de por vida, pero lleno para siempre. Había sido humillado, pero al mismo tiempo enaltecido. Era victorioso porque, una vez descubrió la divinidad de aquel luchador misterioso, no huyó, sino que se aferró más a él. Por fin, Jacob obtuvo la bendición que había anhelado toda la vida. Toda la vida de Jacob había consistido en aferrarse a ídolos que prometían darle sentido y valor. Ahora, finalmente, se aferraba al único que realmente podía dárselos: el Dios viviente."
+    ],
+    reflection: "¿Hay un momento en tu vida donde, en lugar de huir de Dios en la oscuridad, lo abrazaste con desesperación? ¿Qué ocurrió en esa lucha?",
+    prayer: "Señor, en los momentos oscuros de mi vida, que no huya sino que me aferre a Ti. Que pueda decir: 'No te dejaré ir sin que me bendigas'. Tú eres la única bendición que realmente necesito. Amén."
+  },
+  {
+    title: "El Final de los Dioses Falsos",
+    subtitle: "Los ídolos no se derriban, se sustituyen",
+    verse: "\"No hay nada más habitual que la idolatría; y sin embargo, pocos lo reconocen.\" — David Clarkson",
+    content: [
+      "El ministro británico David Clarkson, que vivió en el siglo XVII, predicó uno de los sermones más exhaustivos y penetrantes sobre los dioses falsos que se haya escrito jamás. Al hablar sobre la idolatría, dijo: \"Aunque pocos lo reconozcan, no hay nada más habitual\". Si pensamos en nuestra alma como una casa, dijo él, \"los ídolos están presentes en todas las habitaciones, en todas las facultades\". Preferimos nuestra propia sabiduría a la de Dios, nuestros deseos a la voluntad divina, y nuestra reputación al honor de Dios.",
+      "Clarkson observó las relaciones humanas y constató que tenemos tendencia a hacerlas más influyentes e importantes para nosotros que el propio Dios. Y llegó a una conclusión sorprendente: muchos incluso convierten a sus enemigos en su Dios, cuando les preocupa tanto, les angustia tanto y les confunde tanto la sensación de que los hombres amenazan su libertad, sus estados y sus vidas que eso les preocupa más que el descontento de Dios. El corazón humano es, sin duda, una cadena de montaje de ídolos.",
+      "¿Hay alguna esperanza? Sí, siempre que nos demos cuenta de que a los ídolos no se los puede derribar sin más. Debemos sustituirlos. Si lo único que intentamos es desarraigarlos, vuelven a crecer; pero se los puede sustituir. ¿Por quién? Por el propio Dios, por supuesto. Pero con el término Dios no nos referimos a una creencia general en su existencia. La mayoría de personas la tiene, pero sus almas están repletas de ídolos. Lo que necesitamos es un encuentro vivo con Dios.",
+      "La solución a los ídolos no es la disciplina religiosa vacía, ni la moralidad mejorada, ni siquiera la determinación de hacer las cosas bien. La solución es comprender más profundamente el evangelio hasta que Cristo se vuelva más real, más hermoso y más satisfactorio que cualquier ídolo. Como escribió el poeta George Herbert: \"Tú eres mi amor, mi vida, mi luz, la única belleza para mí\". Cuando Cristo ocupa ese lugar en el corazón, los ídolos pierden su poder. No los derribamos con fuerza de voluntad; se derrumban solos cuando vemos a Aquel que es infinitamente mayor."
+    ],
+    reflection: "¿Qué ídol específico necesitas sustituir hoy? ¿Qué verdad del evangelio podría llenarlo y dejarlo sin poder?",
+    prayer: "Señor, que no intente simplemente mejorar mis comportamientos, sino que Te busque a Ti con todo mi corazón. Que Tu hermosura y Tu amor sean más reales para mí que cualquier otra cosa. Amén."
+  },
+  {
+    title: "Cómo Detectar Nuestros Ídolos",
+    subtitle: "Pistas prácticas para identificar lo que gobierna el corazón",
+    verse: "\"¿Qué es lo que más te enoja, más te atemoriza o más te deprime?\" — Timothy Keller",
+    content: [
+      "La Biblia usa tres metáforas básicas para describir la relación con los ídolos: amor, confianza y obediencia. Y podemos usar esas mismas categorías para detectarlos. Los ídolos capturan nuestra imaginación y podemos localizarlos si nos fijamos en nuestras ensoñaciones cotidianas. ¿Qué nos gusta imaginar? ¿Cuáles son nuestros sueños más preciados? Pedimos a nuestros ídolos que nos amen, que nos proporcionen valor y autoestima, importancia y dignidad.",
+      "Los ídolos también se revelan a través de nuestras pesadillas. ¿Qué es lo que más tememos? ¿Qué haría que, en caso de perderlo, nuestra vida no valiera la pena? Hacemos \"sacrificios\" para aplacar y propiciar a nuestros dioses, quienes, según pensamos, nos protegerán. Esperamos que nuestros ídolos nos ofrezcan confianza y seguridad. Aquello que más tememos perder es frecuentemente un indicador de lo que más adoramos.",
+      "Según un tercer paradigma, podemos detectar a los ídolos observando cuáles son nuestras emociones más sólidas. ¿Qué nos pone incontrolablemente furiosos, ansiosos o abatidos? ¿Qué nos tortura con una culpabilidad de la que no podemos librarnos? Los ídolos nos controlan, dado que sentimos que, si no los tenemos, la vida carece de sentido. Todo lo que nos controla es nuestro señor. El que busca el poder está controlado por él. Quien busca la aceptación está dominado por las personas a las que intenta complacer.",
+      "Existe también una culpa legítima, que se elimina mediante el arrepentimiento y la restitución, y una culpa falsa que parece irremediable. Cuando la gente afirma: \"Sé que Dios me perdona, pero yo no puedo perdonarme\", lo que quieren decir es que le han fallado a un ídolo, cuya aprobación es para ellos más importante que la de Dios. Los ídolos funcionan como dioses en nuestras vidas, de modo que, si convertimos en nuestro dios nuestra profesión o la aprobación de nuestros padres, y luego fracasamos, el ídolo nos maldice desde nuestro corazón durante el resto de nuestras vidas. El evangelio es el único antídoto."
+    ],
+    reflection: "Tómate un momento hoy para hacer el ejercicio: ¿Qué es lo que más temes perder? ¿Qué te hace enojar de manera desproporcionada? ¿Qué ocupas gran parte de tus ensoñaciones?",
+    prayer: "Señor, que hoy tome tiempo para examinarte con honestidad mi corazón. Muéstrame lo que realmente me controla. Que nada sino Tú tenga ese poder sobre mí. Amén."
+  },
+  {
+    title: "Cómo Desmantelar los Ídolos",
+    subtitle: "El poder del evangelio para transformar el corazón",
+    verse: "\"La única manera de librar al corazón de un afecto antiguo es mediante el poder expulsivo de uno nuevo.\" — Thomas Chalmers",
+    content: [
+      "El teólogo escocés Thomas Chalmers, en su famoso sermón \"El poder expulsivo de un nuevo afecto\", argumentó que no se puede simplemente arrancar de raíz el amor del corazón humano hacia algo. El corazón siempre debe estar enamorado de algo. Por lo tanto, la única manera de librar el corazón de un afecto dañino no es suprimirlo, sino reemplazarlo con un afecto más profundo y verdadero: el amor a Cristo. Intentar simplemente decirle al corazón que deje de amar lo que ama nunca funciona a largo plazo.",
+      "Keller resume la misma idea diciendo: no bastará con exponer una demostración del carácter evanescente de nuestros placeres, ni hablar a la consciencia de sus locuras. Más bien, hay que encontrar un acceso a los corazones por amor de Aquel que es mayor que el mundo. Para que un ídolo pierda su poder, el corazón debe ver algo más hermoso, más satisfactorio y más real. Eso sólo ocurre cuando contemplamos a Cristo con los ojos de la fe y lo vemos tal como es: la fuente de todo lo que nuestros ídolos prometieron pero nunca pudieron dar.",
+      "¿Cómo funciona esto en la práctica? El apóstol Pablo dice: \"vuestra vida está escondida con Cristo en Dios\" (Colosenses 3:3). Esto significa que lo que ahora importa no es lo que piensen los demás de mí, ni mi éxito profesional, sino lo que Cristo hizo por mí y cómo me ama. Cuando empezamos a creer esto de verdad, ocurre algo notable: los ídolos pierden su grip sobre nosotros. Ya no necesitamos a los hombres para sentirnos amados, porque tenemos el amor de Cristo. Ya no necesitamos el éxito para sentirnos valiosos, porque Cristo ya nos ha dado un valor infinito.",
+      "Consideremos la historia de Sally, que usaba las relaciones para encontrar su identidad. Cuando encontró el pasaje de Colosenses 3, se dio cuenta de que ni los hombres ni el trabajo ni ninguna otra cosa debía constituir \"su vida\" o su identidad. Cuando encontraba a un hombre que se interesaba por ella, le decía en lo profundo de su corazón: \"Tal vez seas una gran persona, quizá incluso llegues a ser mi marido, pero no puedes ser nunca mi vida. Sólo Cristo es mi vida\". Cuando empezó a hacer esto, recuperó su vida. Esa disciplina espiritual le dio la capacidad de poner límites y tomar buenas decisiones."
+    ],
+    reflection: "¿Qué verdad específica del evangelio podría reemplazar el ídolo que identificaste ayer? ¿Qué le falta al ídolo que Cristo sí te puede dar?",
+    prayer: "Señor Jesús, que Tu amor, Tu aceptación y Tu presencia sean más reales para mí que cualquier otro sustituto. Que mi corazón encuentre en Ti lo que ha estado buscando en todos los lugares equivocados. Amén."
+  },
+  {
+    title: "Vivir Libre de Ídolos",
+    subtitle: "La vida plenamente humana y libres para Dios",
+    verse: "\"Sólo si Jesús vivió y murió por nosotros podemos tener de inmediato un Dios de amor y santidad infinitos.\" — Timothy Keller",
+    content: [
+      "El camino hacia adelante no consiste en simplemente \"intentarlo más\" o \"ser más disciplinado\". Andrew Carnegie sabía que el dinero era un ídolo en su corazón, pero no supo cómo desarraigarlo. No se lo puede destruir, sólo reemplazar. Debe sustituirse por aquel que, aun siendo rico, se hizo pobre para que nosotros pudiéramos enriquecernos de verdad. El evangelio de Cristo no es un llamado a esforzarnos más, sino a mirar hacia Aquel que ya hizo lo que nosotros nunca pudíamos hacer.",
+      "La vida libre de ídolos no es una vida sin deseos, sin ambiciones, sin amor. Es una vida donde todos esos buenos deseos han sido ordenados debajo de Dios. La carrera profesional puede existir, pero ya no es nuestro señor. El amor romántico puede existir, pero ya no es nuestro dios. La familia puede existir, pero ya no lleva el peso de ser nuestra salvación. Cuando Dios ocupa el primer lugar, todo lo demás puede ocupar su lugar correcto y comenzamos a disfrutarlo de una manera libre, sin la ansiedad de quien depende de ello para su sentido de valor.",
+      "Jesús dijo: \"Mas buscad primeramente el reino de Dios y su justicia, y todas estas cosas os serán añadidas\" (Mateo 6:33). Esto no es una técnica para obtener las cosas que queremos. Es una descripción de la vida ordenada: cuando Dios es primero, el resto encuentra su lugar correcto. Los que han aprendido a descansar en el amor de Dios descubren que pueden amar sin posesividad, trabajar sin idolatría, disfrutar sin adicción. Las mismas cosas que antes los esclavizaban ahora pueden ser disfrutadas libremente.",
+      "El camino comienza con la honestidad: reconocer los ídolos en lugar de negarlos. Continúa con la fe: contemplar a Cristo hasta que sea más real y satisfactorio que cualquier ídolo. Y da fruto en la obediencia: vivir de acuerdo con la nueva realidad de que somos amados, valorados y seguros en Dios, no en lo que tengamos o logremos. Esta es la vida que Dios diseñó para nosotros: libre, plena, ordenada alrededor del Dios vivo que nos ama con amor eterno."
+    ],
+    reflection: "¿Qué área de tu vida sería diferente si genuinamente creyeras que eres amado, valorado y seguro en Dios, sin importar lo que tengas o logres?",
+    prayer: "Padre, que viva desde la plenitud de Tu amor, no desde el vacío de mis ídolos. Que busque primero Tu reino, confiando en que Tú añades todo lo demás que necesito. Que mi vida te glorifique. Amén."
+  }
+];
+
+// Render navigation tabs
+const navTabs = document.getElementById('nav-tabs');
+days.forEach((d, i) => {
+  const btn = document.createElement('button');
+  btn.className = 'tab-btn';
+  btn.textContent = i + 1;
+  btn.title = d.title;
+  btn.onclick = () => showDay(i);
+  navTabs.appendChild(btn);
+});
+
+// Render day cards
+const container = document.getElementById('cards-container');
+days.forEach((d, i) => {
+  const card = document.createElement('div');
+  card.className = 'day-card';
+  card.id = 'day-' + i;
+
+  const contentHTML = d.content.map(p => `<p>${p}</p>`).join('');
+
+  card.innerHTML = `
+    <div class="day-header">
+      <div class="day-label">Día ${i + 1} de 30</div>
+      <div class="day-title">${d.title}</div>
+      <div class="day-subtitle">${d.subtitle}</div>
+    </div>
+    <div class="day-body">
+      <div class="verse-box">
+        ${d.verse.replace(/—/, '<span class="verse-ref">—</span>')}
+      </div>
+      <div class="day-content">${contentHTML}</div>
+      <div class="reflection-box">
+        <h3>🪞 Reflexión del Día</h3>
+        <p>${d.reflection}</p>
+      </div>
+      <div class="prayer-box">
+        <h3>🙏 Oración</h3>
+        <p>${d.prayer}</p>
+      </div>
+    </div>
+    <div class="done-btn-wrap">
+      <button class="btn-done" id="done-btn-${i}" onclick="markDone(${i})">
+        ✓ Marcar como leído
+      </button>
+      ${i < days.length - 1 ? `<button class="btn-next" onclick="nextDay(${i})">Día siguiente →</button>` : ''}
+      <span class="completed-badge" id="badge-${i}">✓ ¡Completado!</span>
+    </div>
+  `;
+
+  container.appendChild(card);
+});
+
+// State
+let completed = JSON.parse(localStorage.getItem('devocional_progress') || '[]');
+let currentDay = 0;
+
+function saveProgress() {
+  try { localStorage.setItem('devocional_progress', JSON.stringify(completed)); } catch(e) {}
+}
+
+function updateProgress() {
+  const count = completed.length;
+  const pct = (count / days.length) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = `${count} de ${days.length} días completados`;
+
+  // Update tab buttons
+  document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+    btn.classList.remove('done', 'active');
+    if (completed.includes(i)) btn.classList.add('done');
+    if (i === currentDay) btn.classList.add('active');
+  });
+
+  // Update done buttons
+  days.forEach((d, i) => {
+    const doneBtn = document.getElementById('done-btn-' + i);
+    const badge = document.getElementById('badge-' + i);
+    if (doneBtn && badge) {
+      if (completed.includes(i)) {
+        doneBtn.textContent = '✓ Leído';
+        doneBtn.classList.add('completed');
+        badge.classList.add('show');
+      } else {
+        doneBtn.textContent = '✓ Marcar como leído';
+        doneBtn.classList.remove('completed');
+        badge.classList.remove('show');
+      }
+    }
+  });
+}
+
+function showDay(index) {
+  document.querySelectorAll('.day-card').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  
+  currentDay = index;
+  document.getElementById('day-' + index).classList.add('active');
+  document.querySelectorAll('.tab-btn')[index].classList.add('active');
+  
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateProgress();
+}
+
+function markDone(index) {
+  if (!completed.includes(index)) {
+    completed.push(index);
+    saveProgress();
+    updateProgress();
+  }
+}
+
+function nextDay(index) {
+  if (!completed.includes(index)) markDone(index);
+  if (index + 1 < days.length) showDay(index + 1);
+}
+
+// Find first unread day
+function findFirstUnread() {
+  for (let i = 0; i < days.length; i++) {
+    if (!completed.includes(i)) return i;
+  }
+  return 0;
+}
+
+// Init
+showDay(findFirstUnread());
+updateProgress();
+</script>
+</body>
+</html>
