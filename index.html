@@ -121,16 +121,31 @@
   </div>
 </div>
 
-<script src="lista.js"></script>
-
 <script>
+  // =========================================================================
+  // 📚 LISTA DE DEVOCIONALES DIRECTA
+  // Cuando agregues uno nuevo, solo duplica un bloque aquí adentro.
+  // =========================================================================
+  const devocionales = [
+    {
+      titulo: "Devocional 30 Días – Dioses que Fallan",
+      autor: "Timothy Keller",
+      libro: "Dioses que Fallan",
+      archivo: "devocional_dioses_que_fallan.html",
+      descripcion: "Un plan de 30 días para identificar y reemplazar los ídolos del corazón."
+    },
+    // <-- PARA AGREGAR EL SIGUIENTE, PEGA TU NUEVO BLOQUE AQUÍ ABAJO -->
+    
+  ];
+  // =========================================================================
+
   const authorFilter = document.getElementById('authorFilter');
   const bookFilter = document.getElementById('bookFilter');
   const grid = document.getElementById('devocionalesGrid');
 
   function init() {
     if (typeof devocionales === 'undefined' || devocionales.length === 0) {
-      grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #888; font-style: italic;">No se ha cargado la lista de devocionales.</p>';
+      grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #888; font-style: italic;">No hay devocionales registrados aún.</p>';
       return;
     }
     populateFilters();
